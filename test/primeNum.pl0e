@@ -1,0 +1,57 @@
+# print first n prime num
+INT n;
+INT num;
+INT i;
+
+PROCEDURE INT isPrime(INT a);
+INT x;
+DOUBLE end;
+BEGIN
+IF a==1 THEN
+  RET 0;
+IF a==2 || a==3 THEN
+  RET 1;
+IF a%6 != 1 && a%6 != 5 THEN
+  RET 0;
+
+end=CALL sqrt(a);
+x=1;
+WHILE 6*x-1 <= end DO
+  BEGIN
+  IF a%(6*x-1) == 0 || a%(6*x+1) == 0 THEN
+    RET 0;
+  x=x+1
+  END;
+RET 1
+END;
+
+PROCEDURE VOID input();
+BEGIN
+! 'p';! 'r';! 'i';! 'n';! 't';! ' ';
+! 'f';! 'i';! 'r';! 's';! 't';! ' ';
+! 'n';! ' ';
+! 'p';! 'r';! 'i';! 'm';! 'e';! ' ';
+! 'n';! 'u';! 'm';! ',';
+! 'i';! 'n';! 'p';! 'u';! 't';! ' ';
+! 'n';! ':';! '\n';
+? n
+END;
+
+BEGIN
+CALL input();
+
+i=0;
+num=1;
+WHILE i<n DO
+  BEGIN
+  IF CALL isPrime(num) THEN
+    BEGIN
+    ! num;! '\t';
+    i=i+1;
+    IF i%5 == 0 THEN
+      ! '\n'
+    END;
+  num=num+1 
+  END
+END
+.

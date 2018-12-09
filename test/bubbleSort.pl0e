@@ -1,0 +1,70 @@
+# bubble sort algorithm for n int num(n<10)
+INT num[10];
+INT n;
+
+PROCEDURE VOID input();
+INT i;
+BEGIN
+! 'i';! 'n';! 'p';! 'u';! 't';! ' ';
+! 'n';! ' ';
+! 'n';! 'u';! 'm';! ' ';
+! 'f';! 'o';! 'r';! ' ';
+! 'b';! 'u';! 'b';! 'b';! 'l';! 'e';! ' ';
+! 's';! 'o';! 'r';! 't';! ',';
+! '-';! '1';! ' ';
+! 't';! 'o';! ' ';
+! 'f';! 'i';! 'n';! 'i';! 's';! 'h';
+! '(';! 'n';! '<';! '=';! '1';! '0';! ')';! ':';! '\n';
+? i;
+WHILE i != -1 && n < 10 DO
+  BEGIN
+  num[n]=i;
+  n=n+1;
+  ? i
+  END
+END;
+
+PROCEDURE VOID output();
+INT i;
+BEGIN
+! 'a';! 'f';! 't';! 'e';! 'r';! ' ';
+! 's';! 'o';! 'r';! 't';! ':';! '\n';
+i=0;
+WHILE i<n DO
+  BEGIN
+  ! num[i];
+  ! ' ';
+  i=i+1
+  END;
+  ! '\n'
+END;
+
+PROCEDURE VOID bubbleSort();
+INT i,j;
+INT temp;
+BEGIN
+i=0;
+WHILE i<n-1 DO
+  BEGIN
+  j=0;
+  WHILE j<n-1-i DO
+    BEGIN
+    IF num[j]>num[j+1] THEN
+      BEGIN
+      temp=num[j];
+      num[j]=num[j+1];
+      num[j+1]=temp
+      END;
+    j=j+1
+    END;
+  i=i+1
+  END
+END;
+
+BEGIN
+n=0;
+CALL input();
+CALL bubbleSort();
+CALL output()
+END
+.

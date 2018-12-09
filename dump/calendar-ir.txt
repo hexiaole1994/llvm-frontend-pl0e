@@ -1,0 +1,1192 @@
+; ModuleID = 'llvm module'
+source_filename = "llvm module"
+
+@year = internal global i32 0
+
+declare void @getf(double*)
+
+declare void @geti(i32*)
+
+declare void @putf(double)
+
+declare void @puti(i32)
+
+declare void @putch(i8)
+
+declare i32 @getrem(i32, i32)
+
+declare double @sqrt(double)
+
+define void @main() {
+entry:
+  call void @input()
+  call void @printCalendar()
+  ret void
+}
+
+define void @input() {
+entry:
+  call void @putch(i8 112)
+  call void @putch(i8 114)
+  call void @putch(i8 105)
+  call void @putch(i8 110)
+  call void @putch(i8 116)
+  call void @putch(i8 32)
+  call void @putch(i8 116)
+  call void @putch(i8 104)
+  call void @putch(i8 101)
+  call void @putch(i8 32)
+  call void @putch(i8 99)
+  call void @putch(i8 97)
+  call void @putch(i8 108)
+  call void @putch(i8 101)
+  call void @putch(i8 110)
+  call void @putch(i8 100)
+  call void @putch(i8 97)
+  call void @putch(i8 114)
+  call void @putch(i8 32)
+  call void @putch(i8 111)
+  call void @putch(i8 102)
+  call void @putch(i8 32)
+  call void @putch(i8 105)
+  call void @putch(i8 110)
+  call void @putch(i8 112)
+  call void @putch(i8 117)
+  call void @putch(i8 116)
+  call void @putch(i8 32)
+  call void @putch(i8 121)
+  call void @putch(i8 101)
+  call void @putch(i8 97)
+  call void @putch(i8 114)
+  call void @putch(i8 58)
+  call void @geti(i32* @year)
+  br label %return
+
+return:                                           ; preds = %entry
+  ret void
+}
+
+define i32 @isLeapYear(i32 %year) {
+entry:
+  %retval = alloca i32
+  %year1 = alloca i32
+  store i32 %year, i32* %year1
+  %year2 = load i32, i32* %year1
+  %getrem = call i32 @getrem(i32 %year2, i32 100)
+  %icmpne = icmp ne i32 %getrem, 0
+  %zext = zext i1 %icmpne to i32
+  %year3 = load i32, i32* %year1
+  %getrem4 = call i32 @getrem(i32 %year3, i32 4)
+  %icmpeq = icmp eq i32 %getrem4, 0
+  %zext5 = zext i1 %icmpeq to i32
+  %icmpne6 = icmp ne i32 %zext, 0
+  %icmpne7 = icmp ne i32 %zext5, 0
+  %and = and i1 %icmpne6, %icmpne7
+  %zext8 = zext i1 %and to i32
+  %year9 = load i32, i32* %year1
+  %getrem10 = call i32 @getrem(i32 %year9, i32 400)
+  %icmpeq11 = icmp eq i32 %getrem10, 0
+  %zext12 = zext i1 %icmpeq11 to i32
+  %icmpne13 = icmp ne i32 %zext8, 0
+  %icmpne14 = icmp ne i32 %zext12, 0
+  %or = or i1 %icmpne13, %icmpne14
+  %zext15 = zext i1 %or to i32
+  %ifcond = icmp ne i32 %zext15, 0
+  br i1 %ifcond, label %then, label %ifcont
+
+then:                                             ; preds = %entry
+  store i32 1, i32* %retval
+  br label %return
+
+ifcont:                                           ; preds = %entry
+  store i32 0, i32* %retval
+  br label %return
+
+return:                                           ; preds = %ifcont, %then
+  %retval16 = load i32, i32* %retval
+  ret i32 %retval16
+}
+
+define i32 @getFirstDayIdx(i32 %year) {
+entry:
+  %retval = alloca i32
+  %year1 = alloca i32
+  store i32 %year, i32* %year1
+  %baseYear = alloca i32
+  %daySum = alloca i32
+  %res = alloca i32
+  store i32 1800, i32* %baseYear
+  store i32 0, i32* %daySum
+  br label %while.cond
+
+while.cond:                                       ; preds = %ifcont, %entry
+  %baseYear2 = load i32, i32* %baseYear
+  %year3 = load i32, i32* %year1
+  %icmplt = icmp slt i32 %baseYear2, %year3
+  %zext = zext i1 %icmplt to i32
+  %whilecond = icmp ne i32 %zext, 0
+  br i1 %whilecond, label %while.loop, label %while.end
+
+while.loop:                                       ; preds = %while.cond
+  %baseYear4 = load i32, i32* %baseYear
+  %call = call i32 @isLeapYear(i32 %baseYear4)
+  %ifcond = icmp ne i32 %call, 0
+  br i1 %ifcond, label %then, label %else
+
+then:                                             ; preds = %while.loop
+  %daySum5 = load i32, i32* %daySum
+  %add = add i32 %daySum5, 366
+  store i32 %add, i32* %daySum
+  br label %ifcont
+
+else:                                             ; preds = %while.loop
+  %daySum6 = load i32, i32* %daySum
+  %add7 = add i32 %daySum6, 365
+  store i32 %add7, i32* %daySum
+  br label %ifcont
+
+ifcont:                                           ; preds = %else, %then
+  %baseYear8 = load i32, i32* %baseYear
+  %add9 = add i32 %baseYear8, 1
+  store i32 %add9, i32* %baseYear
+  br label %while.cond
+
+while.end:                                        ; preds = %while.cond
+  %daySum10 = load i32, i32* %daySum
+  %getrem = call i32 @getrem(i32 %daySum10, i32 7)
+  %add11 = add i32 %getrem, 3
+  %getrem12 = call i32 @getrem(i32 %add11, i32 7)
+  store i32 %getrem12, i32* %res
+  %res13 = load i32, i32* %res
+  %icmpeq = icmp eq i32 %res13, 0
+  %zext14 = zext i1 %icmpeq to i32
+  %ifcond15 = icmp ne i32 %zext14, 0
+  br i1 %ifcond15, label %then16, label %ifcont17
+
+then16:                                           ; preds = %while.end
+  store i32 7, i32* %res
+  br label %ifcont17
+
+ifcont17:                                         ; preds = %then16, %while.end
+  %res18 = load i32, i32* %res
+  store i32 %res18, i32* %retval
+  br label %return
+
+return:                                           ; preds = %ifcont17
+  %retval19 = load i32, i32* %retval
+  ret i32 %retval19
+}
+
+define void @printSpace(i32 %n) {
+entry:
+  %n1 = alloca i32
+  store i32 %n, i32* %n1
+  %i = alloca i32
+  store i32 0, i32* %i
+  br label %while.cond
+
+while.cond:                                       ; preds = %while.loop, %entry
+  %i2 = load i32, i32* %i
+  %n3 = load i32, i32* %n1
+  %icmplt = icmp slt i32 %i2, %n3
+  %zext = zext i1 %icmplt to i32
+  %whilecond = icmp ne i32 %zext, 0
+  br i1 %whilecond, label %while.loop, label %while.end
+
+while.loop:                                       ; preds = %while.cond
+  call void @putch(i8 32)
+  %i4 = load i32, i32* %i
+  %add = add i32 %i4, 1
+  store i32 %add, i32* %i
+  br label %while.cond
+
+while.end:                                        ; preds = %while.cond
+  br label %return
+
+return:                                           ; preds = %while.end
+  ret void
+}
+
+define void @print3Week() {
+entry:
+  call void @putch(i8 77)
+  call void @putch(i8 111)
+  call void @putch(i8 32)
+  call void @putch(i8 84)
+  call void @putch(i8 117)
+  call void @putch(i8 32)
+  call void @putch(i8 87)
+  call void @putch(i8 101)
+  call void @putch(i8 32)
+  call void @putch(i8 84)
+  call void @putch(i8 104)
+  call void @putch(i8 32)
+  call void @putch(i8 70)
+  call void @putch(i8 114)
+  call void @putch(i8 32)
+  call void @putch(i8 83)
+  call void @putch(i8 97)
+  call void @putch(i8 32)
+  call void @putch(i8 83)
+  call void @putch(i8 117)
+  call void @printSpace(i32 3)
+  call void @putch(i8 77)
+  call void @putch(i8 111)
+  call void @putch(i8 32)
+  call void @putch(i8 84)
+  call void @putch(i8 117)
+  call void @putch(i8 32)
+  call void @putch(i8 87)
+  call void @putch(i8 101)
+  call void @putch(i8 32)
+  call void @putch(i8 84)
+  call void @putch(i8 104)
+  call void @putch(i8 32)
+  call void @putch(i8 70)
+  call void @putch(i8 114)
+  call void @putch(i8 32)
+  call void @putch(i8 83)
+  call void @putch(i8 97)
+  call void @putch(i8 32)
+  call void @putch(i8 83)
+  call void @putch(i8 117)
+  call void @printSpace(i32 3)
+  call void @putch(i8 77)
+  call void @putch(i8 111)
+  call void @putch(i8 32)
+  call void @putch(i8 84)
+  call void @putch(i8 117)
+  call void @putch(i8 32)
+  call void @putch(i8 87)
+  call void @putch(i8 101)
+  call void @putch(i8 32)
+  call void @putch(i8 84)
+  call void @putch(i8 104)
+  call void @putch(i8 32)
+  call void @putch(i8 70)
+  call void @putch(i8 114)
+  call void @putch(i8 32)
+  call void @putch(i8 83)
+  call void @putch(i8 97)
+  call void @putch(i8 32)
+  call void @putch(i8 83)
+  call void @putch(i8 117)
+  call void @putch(i8 10)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 32)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 32)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 32)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 32)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 32)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 32)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @printSpace(i32 3)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 32)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 32)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 32)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 32)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 32)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 32)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @printSpace(i32 3)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 32)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 32)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 32)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 32)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 32)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 32)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 10)
+  br label %return
+
+return:                                           ; preds = %entry
+  ret void
+}
+
+define void @printYearInfo(i32 %year) {
+entry:
+  %year1 = alloca i32
+  store i32 %year, i32* %year1
+  call void @putch(i8 10)
+  call void @printSpace(i32 31)
+  %year2 = load i32, i32* %year1
+  call void @puti(i32 %year2)
+  call void @putch(i8 10)
+  call void @printSpace(i32 31)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 10)
+  br label %return
+
+return:                                           ; preds = %entry
+  ret void
+}
+
+define void @printSeason(i32 %n) {
+entry:
+  %n1 = alloca i32
+  store i32 %n, i32* %n1
+  %n2 = load i32, i32* %n1
+  %icmpeq = icmp eq i32 %n2, 0
+  %zext = zext i1 %icmpeq to i32
+  %ifcond = icmp ne i32 %zext, 0
+  br i1 %ifcond, label %then, label %ifcont
+
+then:                                             ; preds = %entry
+  call void @printSpace(i32 6)
+  call void @putch(i8 74)
+  call void @putch(i8 97)
+  call void @putch(i8 110)
+  call void @putch(i8 117)
+  call void @putch(i8 97)
+  call void @putch(i8 114)
+  call void @putch(i8 121)
+  call void @printSpace(i32 7)
+  call void @printSpace(i32 3)
+  call void @printSpace(i32 6)
+  call void @putch(i8 70)
+  call void @putch(i8 101)
+  call void @putch(i8 98)
+  call void @putch(i8 114)
+  call void @putch(i8 117)
+  call void @putch(i8 97)
+  call void @putch(i8 114)
+  call void @putch(i8 121)
+  call void @printSpace(i32 6)
+  call void @printSpace(i32 3)
+  call void @printSpace(i32 6)
+  call void @putch(i8 77)
+  call void @putch(i8 97)
+  call void @putch(i8 114)
+  call void @putch(i8 99)
+  call void @putch(i8 104)
+  call void @putch(i8 10)
+  call void @printSpace(i32 6)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @printSpace(i32 7)
+  call void @printSpace(i32 3)
+  call void @printSpace(i32 6)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @printSpace(i32 6)
+  call void @printSpace(i32 3)
+  call void @printSpace(i32 6)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 10)
+  br label %ifcont
+
+ifcont:                                           ; preds = %then, %entry
+  %n3 = load i32, i32* %n1
+  %icmpeq4 = icmp eq i32 %n3, 1
+  %zext5 = zext i1 %icmpeq4 to i32
+  %ifcond6 = icmp ne i32 %zext5, 0
+  br i1 %ifcond6, label %then7, label %ifcont8
+
+then7:                                            ; preds = %ifcont
+  call void @printSpace(i32 6)
+  call void @putch(i8 65)
+  call void @putch(i8 112)
+  call void @putch(i8 114)
+  call void @putch(i8 105)
+  call void @putch(i8 108)
+  call void @printSpace(i32 9)
+  call void @printSpace(i32 3)
+  call void @printSpace(i32 6)
+  call void @putch(i8 77)
+  call void @putch(i8 97)
+  call void @putch(i8 121)
+  call void @printSpace(i32 11)
+  call void @printSpace(i32 3)
+  call void @printSpace(i32 6)
+  call void @putch(i8 74)
+  call void @putch(i8 117)
+  call void @putch(i8 110)
+  call void @putch(i8 101)
+  call void @putch(i8 10)
+  call void @printSpace(i32 6)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @printSpace(i32 9)
+  call void @printSpace(i32 3)
+  call void @printSpace(i32 6)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @printSpace(i32 11)
+  call void @printSpace(i32 3)
+  call void @printSpace(i32 6)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 10)
+  br label %ifcont8
+
+ifcont8:                                          ; preds = %then7, %ifcont
+  %n9 = load i32, i32* %n1
+  %icmpeq10 = icmp eq i32 %n9, 2
+  %zext11 = zext i1 %icmpeq10 to i32
+  %ifcond12 = icmp ne i32 %zext11, 0
+  br i1 %ifcond12, label %then13, label %ifcont14
+
+then13:                                           ; preds = %ifcont8
+  call void @printSpace(i32 6)
+  call void @putch(i8 74)
+  call void @putch(i8 117)
+  call void @putch(i8 108)
+  call void @putch(i8 121)
+  call void @printSpace(i32 10)
+  call void @printSpace(i32 3)
+  call void @printSpace(i32 6)
+  call void @putch(i8 65)
+  call void @putch(i8 117)
+  call void @putch(i8 103)
+  call void @putch(i8 117)
+  call void @putch(i8 115)
+  call void @putch(i8 116)
+  call void @printSpace(i32 8)
+  call void @printSpace(i32 3)
+  call void @printSpace(i32 6)
+  call void @putch(i8 83)
+  call void @putch(i8 101)
+  call void @putch(i8 112)
+  call void @putch(i8 116)
+  call void @putch(i8 101)
+  call void @putch(i8 109)
+  call void @putch(i8 98)
+  call void @putch(i8 101)
+  call void @putch(i8 114)
+  call void @putch(i8 10)
+  call void @printSpace(i32 6)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @printSpace(i32 10)
+  call void @printSpace(i32 3)
+  call void @printSpace(i32 6)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @printSpace(i32 8)
+  call void @printSpace(i32 3)
+  call void @printSpace(i32 6)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 10)
+  br label %ifcont14
+
+ifcont14:                                         ; preds = %then13, %ifcont8
+  %n15 = load i32, i32* %n1
+  %icmpeq16 = icmp eq i32 %n15, 3
+  %zext17 = zext i1 %icmpeq16 to i32
+  %ifcond18 = icmp ne i32 %zext17, 0
+  br i1 %ifcond18, label %then19, label %ifcont20
+
+then19:                                           ; preds = %ifcont14
+  call void @printSpace(i32 6)
+  call void @putch(i8 79)
+  call void @putch(i8 99)
+  call void @putch(i8 116)
+  call void @putch(i8 111)
+  call void @putch(i8 98)
+  call void @putch(i8 101)
+  call void @putch(i8 114)
+  call void @printSpace(i32 7)
+  call void @printSpace(i32 3)
+  call void @printSpace(i32 6)
+  call void @putch(i8 78)
+  call void @putch(i8 111)
+  call void @putch(i8 118)
+  call void @putch(i8 101)
+  call void @putch(i8 109)
+  call void @putch(i8 98)
+  call void @putch(i8 101)
+  call void @putch(i8 114)
+  call void @printSpace(i32 6)
+  call void @printSpace(i32 3)
+  call void @printSpace(i32 6)
+  call void @putch(i8 68)
+  call void @putch(i8 101)
+  call void @putch(i8 99)
+  call void @putch(i8 101)
+  call void @putch(i8 109)
+  call void @putch(i8 98)
+  call void @putch(i8 101)
+  call void @putch(i8 114)
+  call void @putch(i8 10)
+  call void @printSpace(i32 6)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @printSpace(i32 7)
+  call void @printSpace(i32 3)
+  call void @printSpace(i32 6)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @printSpace(i32 6)
+  call void @printSpace(i32 3)
+  call void @printSpace(i32 6)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 45)
+  call void @putch(i8 10)
+  br label %ifcont20
+
+ifcont20:                                         ; preds = %then19, %ifcont14
+  call void @print3Week()
+  br label %return
+
+return:                                           ; preds = %ifcont20
+  ret void
+}
+
+define i32 @getDays(i32 %month) {
+entry:
+  %retval = alloca i32
+  %month1 = alloca i32
+  store i32 %month, i32* %month1
+  %month2 = load i32, i32* %month1
+  %icmpeq = icmp eq i32 %month2, 2
+  %zext = zext i1 %icmpeq to i32
+  %ifcond = icmp ne i32 %zext, 0
+  br i1 %ifcond, label %then, label %else5
+
+then:                                             ; preds = %entry
+  %year = load i32, i32* @year
+  %call = call i32 @isLeapYear(i32 %year)
+  %ifcond3 = icmp ne i32 %call, 0
+  br i1 %ifcond3, label %then4, label %else
+
+then4:                                            ; preds = %then
+  store i32 29, i32* %retval
+  br label %return
+
+else:                                             ; preds = %then
+  store i32 28, i32* %retval
+  br label %return
+
+ifcont:                                           ; No predecessors!
+  br label %ifcont32
+
+else5:                                            ; preds = %entry
+  %month6 = load i32, i32* %month1
+  %icmpeq7 = icmp eq i32 %month6, 4
+  %zext8 = zext i1 %icmpeq7 to i32
+  %month9 = load i32, i32* %month1
+  %icmpeq10 = icmp eq i32 %month9, 6
+  %zext11 = zext i1 %icmpeq10 to i32
+  %icmpne = icmp ne i32 %zext8, 0
+  %icmpne12 = icmp ne i32 %zext11, 0
+  %or = or i1 %icmpne, %icmpne12
+  %zext13 = zext i1 %or to i32
+  %month14 = load i32, i32* %month1
+  %icmpeq15 = icmp eq i32 %month14, 9
+  %zext16 = zext i1 %icmpeq15 to i32
+  %icmpne17 = icmp ne i32 %zext13, 0
+  %icmpne18 = icmp ne i32 %zext16, 0
+  %or19 = or i1 %icmpne17, %icmpne18
+  %zext20 = zext i1 %or19 to i32
+  %month21 = load i32, i32* %month1
+  %icmpeq22 = icmp eq i32 %month21, 11
+  %zext23 = zext i1 %icmpeq22 to i32
+  %icmpne24 = icmp ne i32 %zext20, 0
+  %icmpne25 = icmp ne i32 %zext23, 0
+  %or26 = or i1 %icmpne24, %icmpne25
+  %zext27 = zext i1 %or26 to i32
+  %ifcond28 = icmp ne i32 %zext27, 0
+  br i1 %ifcond28, label %then29, label %else30
+
+then29:                                           ; preds = %else5
+  store i32 30, i32* %retval
+  br label %return
+
+else30:                                           ; preds = %else5
+  store i32 31, i32* %retval
+  br label %return
+
+ifcont31:                                         ; No predecessors!
+  br label %ifcont32
+
+ifcont32:                                         ; preds = %ifcont31, %ifcont
+  br label %return
+
+return:                                           ; preds = %ifcont32, %else30, %then29, %else, %then4
+  %retval33 = load i32, i32* %retval
+  ret i32 %retval33
+}
+
+define void @printCalendar() {
+entry:
+  %FirstDays = alloca i32
+  %SecondDays = alloca i32
+  %ThirdDays = alloca i32
+  %FirstCurDate = alloca i32
+  %SecondCurDate = alloca i32
+  %ThirdCurDate = alloca i32
+  %FirstDateIdx = alloca i32
+  %SecondDateIdx = alloca i32
+  %ThirdDateIdx = alloca i32
+  %FirstEnd = alloca i32
+  %SecondEnd = alloca i32
+  %ThirdEnd = alloca i32
+  %i = alloca i32
+  store i32 0, i32* %i
+  %year = load i32, i32* @year
+  call void @printYearInfo(i32 %year)
+  br label %while.cond
+
+while.cond:                                       ; preds = %while.end251, %entry
+  %i1 = load i32, i32* %i
+  %icmplt = icmp slt i32 %i1, 4
+  %zext = zext i1 %icmplt to i32
+  %whilecond = icmp ne i32 %zext, 0
+  br i1 %whilecond, label %while.loop, label %while.end254
+
+while.loop:                                       ; preds = %while.cond
+  %i2 = load i32, i32* %i
+  call void @printSeason(i32 %i2)
+  %i3 = load i32, i32* %i
+  %mul = mul i32 %i3, 3
+  %add = add i32 %mul, 1
+  %call = call i32 @getDays(i32 %add)
+  store i32 %call, i32* %FirstDays
+  %i4 = load i32, i32* %i
+  %mul5 = mul i32 %i4, 3
+  %add6 = add i32 %mul5, 2
+  %call7 = call i32 @getDays(i32 %add6)
+  store i32 %call7, i32* %SecondDays
+  %i8 = load i32, i32* %i
+  %mul9 = mul i32 %i8, 3
+  %add10 = add i32 %mul9, 3
+  %call11 = call i32 @getDays(i32 %add10)
+  store i32 %call11, i32* %ThirdDays
+  store i32 1, i32* %FirstCurDate
+  store i32 1, i32* %SecondCurDate
+  store i32 1, i32* %ThirdCurDate
+  %i12 = load i32, i32* %i
+  %icmpeq = icmp eq i32 %i12, 0
+  %zext13 = zext i1 %icmpeq to i32
+  %ifcond = icmp ne i32 %zext13, 0
+  br i1 %ifcond, label %then, label %else
+
+then:                                             ; preds = %while.loop
+  %year14 = load i32, i32* @year
+  %call15 = call i32 @getFirstDayIdx(i32 %year14)
+  store i32 %call15, i32* %FirstDateIdx
+  br label %ifcont22
+
+else:                                             ; preds = %while.loop
+  %ThirdDateIdx16 = load i32, i32* %ThirdDateIdx
+  %getrem = call i32 @getrem(i32 %ThirdDateIdx16, i32 7)
+  store i32 %getrem, i32* %FirstDateIdx
+  %FirstDateIdx17 = load i32, i32* %FirstDateIdx
+  %icmpeq18 = icmp eq i32 %FirstDateIdx17, 0
+  %zext19 = zext i1 %icmpeq18 to i32
+  %ifcond20 = icmp ne i32 %zext19, 0
+  br i1 %ifcond20, label %then21, label %ifcont
+
+then21:                                           ; preds = %else
+  store i32 7, i32* %FirstDateIdx
+  br label %ifcont
+
+ifcont:                                           ; preds = %then21, %else
+  br label %ifcont22
+
+ifcont22:                                         ; preds = %ifcont, %then
+  %FirstDateIdx23 = load i32, i32* %FirstDateIdx
+  %FirstDays24 = load i32, i32* %FirstDays
+  %add25 = add i32 %FirstDateIdx23, %FirstDays24
+  %getrem26 = call i32 @getrem(i32 %add25, i32 7)
+  store i32 %getrem26, i32* %SecondDateIdx
+  %SecondDateIdx27 = load i32, i32* %SecondDateIdx
+  %icmpeq28 = icmp eq i32 %SecondDateIdx27, 0
+  %zext29 = zext i1 %icmpeq28 to i32
+  %ifcond30 = icmp ne i32 %zext29, 0
+  br i1 %ifcond30, label %then31, label %ifcont32
+
+then31:                                           ; preds = %ifcont22
+  store i32 7, i32* %SecondDateIdx
+  br label %ifcont32
+
+ifcont32:                                         ; preds = %then31, %ifcont22
+  %SecondDateIdx33 = load i32, i32* %SecondDateIdx
+  %SecondDays34 = load i32, i32* %SecondDays
+  %add35 = add i32 %SecondDateIdx33, %SecondDays34
+  %getrem36 = call i32 @getrem(i32 %add35, i32 7)
+  store i32 %getrem36, i32* %ThirdDateIdx
+  %ThirdDateIdx37 = load i32, i32* %ThirdDateIdx
+  %icmpeq38 = icmp eq i32 %ThirdDateIdx37, 0
+  %zext39 = zext i1 %icmpeq38 to i32
+  %ifcond40 = icmp ne i32 %zext39, 0
+  br i1 %ifcond40, label %then41, label %ifcont42
+
+then41:                                           ; preds = %ifcont32
+  store i32 7, i32* %ThirdDateIdx
+  br label %ifcont42
+
+ifcont42:                                         ; preds = %then41, %ifcont32
+  store i32 0, i32* %FirstEnd
+  store i32 0, i32* %SecondEnd
+  store i32 0, i32* %ThirdEnd
+  %FirstDateIdx43 = load i32, i32* %FirstDateIdx
+  %sub = sub i32 %FirstDateIdx43, 1
+  %mul44 = mul i32 %sub, 3
+  call void @printSpace(i32 %mul44)
+  br label %while.cond45
+
+while.cond45:                                     ; preds = %while.loop49, %ifcont42
+  %FirstDateIdx46 = load i32, i32* %FirstDateIdx
+  %icmple = icmp sle i32 %FirstDateIdx46, 7
+  %zext47 = zext i1 %icmple to i32
+  %whilecond48 = icmp ne i32 %zext47, 0
+  br i1 %whilecond48, label %while.loop49, label %while.end
+
+while.loop49:                                     ; preds = %while.cond45
+  %FirstCurDate50 = load i32, i32* %FirstCurDate
+  call void @puti(i32 %FirstCurDate50)
+  call void @printSpace(i32 2)
+  %FirstCurDate51 = load i32, i32* %FirstCurDate
+  %add52 = add i32 %FirstCurDate51, 1
+  store i32 %add52, i32* %FirstCurDate
+  %FirstDateIdx53 = load i32, i32* %FirstDateIdx
+  %add54 = add i32 %FirstDateIdx53, 1
+  store i32 %add54, i32* %FirstDateIdx
+  br label %while.cond45
+
+while.end:                                        ; preds = %while.cond45
+  store i32 1, i32* %FirstDateIdx
+  call void @printSpace(i32 2)
+  %SecondDateIdx55 = load i32, i32* %SecondDateIdx
+  %sub56 = sub i32 %SecondDateIdx55, 1
+  %mul57 = mul i32 %sub56, 3
+  call void @printSpace(i32 %mul57)
+  br label %while.cond58
+
+while.cond58:                                     ; preds = %while.loop63, %while.end
+  %SecondDateIdx59 = load i32, i32* %SecondDateIdx
+  %icmple60 = icmp sle i32 %SecondDateIdx59, 7
+  %zext61 = zext i1 %icmple60 to i32
+  %whilecond62 = icmp ne i32 %zext61, 0
+  br i1 %whilecond62, label %while.loop63, label %while.end69
+
+while.loop63:                                     ; preds = %while.cond58
+  %SecondCurDate64 = load i32, i32* %SecondCurDate
+  call void @puti(i32 %SecondCurDate64)
+  call void @printSpace(i32 2)
+  %SecondCurDate65 = load i32, i32* %SecondCurDate
+  %add66 = add i32 %SecondCurDate65, 1
+  store i32 %add66, i32* %SecondCurDate
+  %SecondDateIdx67 = load i32, i32* %SecondDateIdx
+  %add68 = add i32 %SecondDateIdx67, 1
+  store i32 %add68, i32* %SecondDateIdx
+  br label %while.cond58
+
+while.end69:                                      ; preds = %while.cond58
+  store i32 1, i32* %SecondDateIdx
+  call void @printSpace(i32 2)
+  %ThirdDateIdx70 = load i32, i32* %ThirdDateIdx
+  %sub71 = sub i32 %ThirdDateIdx70, 1
+  %mul72 = mul i32 %sub71, 3
+  call void @printSpace(i32 %mul72)
+  br label %while.cond73
+
+while.cond73:                                     ; preds = %while.loop78, %while.end69
+  %ThirdDateIdx74 = load i32, i32* %ThirdDateIdx
+  %icmple75 = icmp sle i32 %ThirdDateIdx74, 7
+  %zext76 = zext i1 %icmple75 to i32
+  %whilecond77 = icmp ne i32 %zext76, 0
+  br i1 %whilecond77, label %while.loop78, label %while.end84
+
+while.loop78:                                     ; preds = %while.cond73
+  %ThirdCurDate79 = load i32, i32* %ThirdCurDate
+  call void @puti(i32 %ThirdCurDate79)
+  call void @printSpace(i32 2)
+  %ThirdCurDate80 = load i32, i32* %ThirdCurDate
+  %add81 = add i32 %ThirdCurDate80, 1
+  store i32 %add81, i32* %ThirdCurDate
+  %ThirdDateIdx82 = load i32, i32* %ThirdDateIdx
+  %add83 = add i32 %ThirdDateIdx82, 1
+  store i32 %add83, i32* %ThirdDateIdx
+  br label %while.cond73
+
+while.end84:                                      ; preds = %while.cond73
+  store i32 1, i32* %ThirdDateIdx
+  call void @putch(i8 10)
+  br label %while.cond85
+
+while.cond85:                                     ; preds = %ifcont250, %while.end84
+  %FirstEnd86 = load i32, i32* %FirstEnd
+  %icmpne = icmp ne i32 %FirstEnd86, 1
+  %zext87 = zext i1 %icmpne to i32
+  %SecondEnd88 = load i32, i32* %SecondEnd
+  %icmpne89 = icmp ne i32 %SecondEnd88, 1
+  %zext90 = zext i1 %icmpne89 to i32
+  %icmpne91 = icmp ne i32 %zext87, 0
+  %icmpne92 = icmp ne i32 %zext90, 0
+  %or = or i1 %icmpne91, %icmpne92
+  %zext93 = zext i1 %or to i32
+  %ThirdEnd94 = load i32, i32* %ThirdEnd
+  %icmpne95 = icmp ne i32 %ThirdEnd94, 1
+  %zext96 = zext i1 %icmpne95 to i32
+  %icmpne97 = icmp ne i32 %zext93, 0
+  %icmpne98 = icmp ne i32 %zext96, 0
+  %or99 = or i1 %icmpne97, %icmpne98
+  %zext100 = zext i1 %or99 to i32
+  %whilecond101 = icmp ne i32 %zext100, 0
+  br i1 %whilecond101, label %while.loop102, label %while.end251
+
+while.loop102:                                    ; preds = %while.cond85
+  %FirstEnd103 = load i32, i32* %FirstEnd
+  %icmpne104 = icmp ne i32 %FirstEnd103, 1
+  %zext105 = zext i1 %icmpne104 to i32
+  %ifcond106 = icmp ne i32 %zext105, 0
+  br i1 %ifcond106, label %then107, label %else151
+
+then107:                                          ; preds = %while.loop102
+  br label %while.cond108
+
+while.cond108:                                    ; preds = %ifcont139, %then107
+  %FirstCurDate109 = load i32, i32* %FirstCurDate
+  %FirstDays110 = load i32, i32* %FirstDays
+  %icmple111 = icmp sle i32 %FirstCurDate109, %FirstDays110
+  %zext112 = zext i1 %icmple111 to i32
+  %FirstDateIdx113 = load i32, i32* %FirstDateIdx
+  %icmple114 = icmp sle i32 %FirstDateIdx113, 7
+  %zext115 = zext i1 %icmple114 to i32
+  %icmpne116 = icmp ne i32 %zext112, 0
+  %icmpne117 = icmp ne i32 %zext115, 0
+  %and = and i1 %icmpne116, %icmpne117
+  %zext118 = zext i1 %and to i32
+  %whilecond119 = icmp ne i32 %zext118, 0
+  br i1 %whilecond119, label %while.loop120, label %while.end144
+
+while.loop120:                                    ; preds = %while.cond108
+  %FirstCurDate121 = load i32, i32* %FirstCurDate
+  call void @puti(i32 %FirstCurDate121)
+  %FirstCurDate122 = load i32, i32* %FirstCurDate
+  %icmpgt = icmp sgt i32 %FirstCurDate122, 9
+  %zext123 = zext i1 %icmpgt to i32
+  %ifcond124 = icmp ne i32 %zext123, 0
+  br i1 %ifcond124, label %then125, label %else126
+
+then125:                                          ; preds = %while.loop120
+  call void @printSpace(i32 1)
+  br label %ifcont127
+
+else126:                                          ; preds = %while.loop120
+  call void @printSpace(i32 2)
+  br label %ifcont127
+
+ifcont127:                                        ; preds = %else126, %then125
+  %FirstCurDate128 = load i32, i32* %FirstCurDate
+  %FirstDays129 = load i32, i32* %FirstDays
+  %icmpeq130 = icmp eq i32 %FirstCurDate128, %FirstDays129
+  %zext131 = zext i1 %icmpeq130 to i32
+  %ifcond132 = icmp ne i32 %zext131, 0
+  br i1 %ifcond132, label %then133, label %ifcont139
+
+then133:                                          ; preds = %ifcont127
+  store i32 1, i32* %FirstEnd
+  %FirstDateIdx134 = load i32, i32* %FirstDateIdx
+  %sub135 = sub i32 7, %FirstDateIdx134
+  %add136 = add i32 %sub135, 1
+  %mul137 = mul i32 %add136, 3
+  %sub138 = sub i32 %mul137, 1
+  call void @printSpace(i32 %sub138)
+  br label %ifcont139
+
+ifcont139:                                        ; preds = %then133, %ifcont127
+  %FirstCurDate140 = load i32, i32* %FirstCurDate
+  %add141 = add i32 %FirstCurDate140, 1
+  store i32 %add141, i32* %FirstCurDate
+  %FirstDateIdx142 = load i32, i32* %FirstDateIdx
+  %add143 = add i32 %FirstDateIdx142, 1
+  store i32 %add143, i32* %FirstDateIdx
+  br label %while.cond108
+
+while.end144:                                     ; preds = %while.cond108
+  %FirstEnd145 = load i32, i32* %FirstEnd
+  %icmpeq146 = icmp eq i32 %FirstEnd145, 0
+  %zext147 = zext i1 %icmpeq146 to i32
+  %ifcond148 = icmp ne i32 %zext147, 0
+  br i1 %ifcond148, label %then149, label %ifcont150
+
+then149:                                          ; preds = %while.end144
+  store i32 1, i32* %FirstDateIdx
+  call void @printSpace(i32 2)
+  br label %ifcont150
+
+ifcont150:                                        ; preds = %then149, %while.end144
+  br label %ifcont152
+
+else151:                                          ; preds = %while.loop102
+  call void @printSpace(i32 23)
+  br label %ifcont152
+
+ifcont152:                                        ; preds = %else151, %ifcont150
+  %SecondEnd153 = load i32, i32* %SecondEnd
+  %icmpne154 = icmp ne i32 %SecondEnd153, 1
+  %zext155 = zext i1 %icmpne154 to i32
+  %ifcond156 = icmp ne i32 %zext155, 0
+  br i1 %ifcond156, label %then157, label %else203
+
+then157:                                          ; preds = %ifcont152
+  br label %while.cond158
+
+while.cond158:                                    ; preds = %ifcont191, %then157
+  %SecondCurDate159 = load i32, i32* %SecondCurDate
+  %SecondDays160 = load i32, i32* %SecondDays
+  %icmple161 = icmp sle i32 %SecondCurDate159, %SecondDays160
+  %zext162 = zext i1 %icmple161 to i32
+  %SecondDateIdx163 = load i32, i32* %SecondDateIdx
+  %icmple164 = icmp sle i32 %SecondDateIdx163, 7
+  %zext165 = zext i1 %icmple164 to i32
+  %icmpne166 = icmp ne i32 %zext162, 0
+  %icmpne167 = icmp ne i32 %zext165, 0
+  %and168 = and i1 %icmpne166, %icmpne167
+  %zext169 = zext i1 %and168 to i32
+  %whilecond170 = icmp ne i32 %zext169, 0
+  br i1 %whilecond170, label %while.loop171, label %while.end196
+
+while.loop171:                                    ; preds = %while.cond158
+  %SecondCurDate172 = load i32, i32* %SecondCurDate
+  call void @puti(i32 %SecondCurDate172)
+  %SecondCurDate173 = load i32, i32* %SecondCurDate
+  %icmpgt174 = icmp sgt i32 %SecondCurDate173, 9
+  %zext175 = zext i1 %icmpgt174 to i32
+  %ifcond176 = icmp ne i32 %zext175, 0
+  br i1 %ifcond176, label %then177, label %else178
+
+then177:                                          ; preds = %while.loop171
+  call void @printSpace(i32 1)
+  br label %ifcont179
+
+else178:                                          ; preds = %while.loop171
+  call void @printSpace(i32 2)
+  br label %ifcont179
+
+ifcont179:                                        ; preds = %else178, %then177
+  %SecondCurDate180 = load i32, i32* %SecondCurDate
+  %SecondDays181 = load i32, i32* %SecondDays
+  %icmpeq182 = icmp eq i32 %SecondCurDate180, %SecondDays181
+  %zext183 = zext i1 %icmpeq182 to i32
+  %ifcond184 = icmp ne i32 %zext183, 0
+  br i1 %ifcond184, label %then185, label %ifcont191
+
+then185:                                          ; preds = %ifcont179
+  store i32 1, i32* %SecondEnd
+  %SecondDateIdx186 = load i32, i32* %SecondDateIdx
+  %sub187 = sub i32 7, %SecondDateIdx186
+  %add188 = add i32 %sub187, 1
+  %mul189 = mul i32 %add188, 3
+  %sub190 = sub i32 %mul189, 1
+  call void @printSpace(i32 %sub190)
+  br label %ifcont191
+
+ifcont191:                                        ; preds = %then185, %ifcont179
+  %SecondCurDate192 = load i32, i32* %SecondCurDate
+  %add193 = add i32 %SecondCurDate192, 1
+  store i32 %add193, i32* %SecondCurDate
+  %SecondDateIdx194 = load i32, i32* %SecondDateIdx
+  %add195 = add i32 %SecondDateIdx194, 1
+  store i32 %add195, i32* %SecondDateIdx
+  br label %while.cond158
+
+while.end196:                                     ; preds = %while.cond158
+  %SecondEnd197 = load i32, i32* %SecondEnd
+  %icmpeq198 = icmp eq i32 %SecondEnd197, 0
+  %zext199 = zext i1 %icmpeq198 to i32
+  %ifcond200 = icmp ne i32 %zext199, 0
+  br i1 %ifcond200, label %then201, label %ifcont202
+
+then201:                                          ; preds = %while.end196
+  store i32 1, i32* %SecondDateIdx
+  call void @printSpace(i32 2)
+  br label %ifcont202
+
+ifcont202:                                        ; preds = %then201, %while.end196
+  br label %ifcont204
+
+else203:                                          ; preds = %ifcont152
+  call void @printSpace(i32 23)
+  br label %ifcont204
+
+ifcont204:                                        ; preds = %else203, %ifcont202
+  %ThirdEnd205 = load i32, i32* %ThirdEnd
+  %icmpne206 = icmp ne i32 %ThirdEnd205, 1
+  %zext207 = zext i1 %icmpne206 to i32
+  %ifcond208 = icmp ne i32 %zext207, 0
+  br i1 %ifcond208, label %then209, label %ifcont250
+
+then209:                                          ; preds = %ifcont204
+  br label %while.cond210
+
+while.cond210:                                    ; preds = %ifcont238, %then209
+  %ThirdCurDate211 = load i32, i32* %ThirdCurDate
+  %ThirdDays212 = load i32, i32* %ThirdDays
+  %icmple213 = icmp sle i32 %ThirdCurDate211, %ThirdDays212
+  %zext214 = zext i1 %icmple213 to i32
+  %ThirdDateIdx215 = load i32, i32* %ThirdDateIdx
+  %icmple216 = icmp sle i32 %ThirdDateIdx215, 7
+  %zext217 = zext i1 %icmple216 to i32
+  %icmpne218 = icmp ne i32 %zext214, 0
+  %icmpne219 = icmp ne i32 %zext217, 0
+  %and220 = and i1 %icmpne218, %icmpne219
+  %zext221 = zext i1 %and220 to i32
+  %whilecond222 = icmp ne i32 %zext221, 0
+  br i1 %whilecond222, label %while.loop223, label %while.end243
+
+while.loop223:                                    ; preds = %while.cond210
+  %ThirdCurDate224 = load i32, i32* %ThirdCurDate
+  call void @puti(i32 %ThirdCurDate224)
+  %ThirdCurDate225 = load i32, i32* %ThirdCurDate
+  %icmpgt226 = icmp sgt i32 %ThirdCurDate225, 9
+  %zext227 = zext i1 %icmpgt226 to i32
+  %ifcond228 = icmp ne i32 %zext227, 0
+  br i1 %ifcond228, label %then229, label %else230
+
+then229:                                          ; preds = %while.loop223
+  call void @printSpace(i32 1)
+  br label %ifcont231
+
+else230:                                          ; preds = %while.loop223
+  call void @printSpace(i32 2)
+  br label %ifcont231
+
+ifcont231:                                        ; preds = %else230, %then229
+  %ThirdCurDate232 = load i32, i32* %ThirdCurDate
+  %ThirdDays233 = load i32, i32* %ThirdDays
+  %icmpeq234 = icmp eq i32 %ThirdCurDate232, %ThirdDays233
+  %zext235 = zext i1 %icmpeq234 to i32
+  %ifcond236 = icmp ne i32 %zext235, 0
+  br i1 %ifcond236, label %then237, label %ifcont238
+
+then237:                                          ; preds = %ifcont231
+  store i32 1, i32* %ThirdEnd
+  br label %ifcont238
+
+ifcont238:                                        ; preds = %then237, %ifcont231
+  %ThirdCurDate239 = load i32, i32* %ThirdCurDate
+  %add240 = add i32 %ThirdCurDate239, 1
+  store i32 %add240, i32* %ThirdCurDate
+  %ThirdDateIdx241 = load i32, i32* %ThirdDateIdx
+  %add242 = add i32 %ThirdDateIdx241, 1
+  store i32 %add242, i32* %ThirdDateIdx
+  br label %while.cond210
+
+while.end243:                                     ; preds = %while.cond210
+  %ThirdEnd244 = load i32, i32* %ThirdEnd
+  %icmpeq245 = icmp eq i32 %ThirdEnd244, 0
+  %zext246 = zext i1 %icmpeq245 to i32
+  %ifcond247 = icmp ne i32 %zext246, 0
+  br i1 %ifcond247, label %then248, label %ifcont249
+
+then248:                                          ; preds = %while.end243
+  store i32 1, i32* %ThirdDateIdx
+  br label %ifcont249
+
+ifcont249:                                        ; preds = %then248, %while.end243
+  br label %ifcont250
+
+ifcont250:                                        ; preds = %ifcont249, %ifcont204
+  call void @putch(i8 10)
+  br label %while.cond85
+
+while.end251:                                     ; preds = %while.cond85
+  %i252 = load i32, i32* %i
+  %add253 = add i32 %i252, 1
+  store i32 %add253, i32* %i
+  call void @putch(i8 10)
+  br label %while.cond
+
+while.end254:                                     ; preds = %while.cond
+  br label %return
+
+return:                                           ; preds = %while.end254
+  ret void
+}

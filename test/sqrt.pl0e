@@ -1,0 +1,7 @@
+DOUBLE res;
+BEGIN
+res=CALL sqrt(2.25);
+! res;
+! '\n'
+END
+.

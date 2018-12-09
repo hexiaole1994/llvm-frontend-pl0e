@@ -1,0 +1,307 @@
+; ModuleID = 'llvm module'
+source_filename = "llvm module"
+
+@arr = internal global [10 x i32] zeroinitializer
+@n = internal global i32 0
+
+declare void @getf(double*)
+
+declare void @geti(i32*)
+
+declare void @putf(double)
+
+declare void @puti(i32)
+
+declare void @putch(i8)
+
+declare i32 @getrem(i32, i32)
+
+declare double @sqrt(double)
+
+define void @main() {
+entry:
+  store i32 0, i32* @n
+  call void @input()
+  %n = load i32, i32* @n
+  %sub = sub i32 %n, 1
+  call void @quickSort(i32 0, i32 %sub)
+  call void @output()
+  ret void
+}
+
+define void @input() {
+entry:
+  %i = alloca i32
+  call void @putch(i8 105)
+  call void @putch(i8 110)
+  call void @putch(i8 112)
+  call void @putch(i8 117)
+  call void @putch(i8 116)
+  call void @putch(i8 32)
+  call void @putch(i8 110)
+  call void @putch(i8 32)
+  call void @putch(i8 110)
+  call void @putch(i8 117)
+  call void @putch(i8 109)
+  call void @putch(i8 32)
+  call void @putch(i8 102)
+  call void @putch(i8 111)
+  call void @putch(i8 114)
+  call void @putch(i8 32)
+  call void @putch(i8 113)
+  call void @putch(i8 117)
+  call void @putch(i8 105)
+  call void @putch(i8 99)
+  call void @putch(i8 107)
+  call void @putch(i8 32)
+  call void @putch(i8 115)
+  call void @putch(i8 111)
+  call void @putch(i8 114)
+  call void @putch(i8 116)
+  call void @putch(i8 44)
+  call void @putch(i8 45)
+  call void @putch(i8 49)
+  call void @putch(i8 32)
+  call void @putch(i8 116)
+  call void @putch(i8 111)
+  call void @putch(i8 32)
+  call void @putch(i8 102)
+  call void @putch(i8 105)
+  call void @putch(i8 110)
+  call void @putch(i8 105)
+  call void @putch(i8 115)
+  call void @putch(i8 104)
+  call void @putch(i8 40)
+  call void @putch(i8 110)
+  call void @putch(i8 60)
+  call void @putch(i8 61)
+  call void @putch(i8 49)
+  call void @putch(i8 48)
+  call void @putch(i8 41)
+  call void @putch(i8 58)
+  call void @putch(i8 10)
+  call void @geti(i32* %i)
+  br label %while.cond
+
+while.cond:                                       ; preds = %while.loop, %entry
+  %i1 = load i32, i32* %i
+  %icmpne = icmp ne i32 %i1, -1
+  %zext = zext i1 %icmpne to i32
+  %n = load i32, i32* @n
+  %icmplt = icmp slt i32 %n, 10
+  %zext2 = zext i1 %icmplt to i32
+  %icmpne3 = icmp ne i32 %zext, 0
+  %icmpne4 = icmp ne i32 %zext2, 0
+  %and = and i1 %icmpne3, %icmpne4
+  %zext5 = zext i1 %and to i32
+  %whilecond = icmp ne i32 %zext5, 0
+  br i1 %whilecond, label %while.loop, label %while.end
+
+while.loop:                                       ; preds = %while.cond
+  %n6 = load i32, i32* @n
+  %gepinbounds = getelementptr inbounds [10 x i32], [10 x i32]* @arr, i32 0, i32 %n6
+  %i7 = load i32, i32* %i
+  store i32 %i7, i32* %gepinbounds
+  %n8 = load i32, i32* @n
+  %add = add i32 %n8, 1
+  store i32 %add, i32* @n
+  call void @geti(i32* %i)
+  br label %while.cond
+
+while.end:                                        ; preds = %while.cond
+  br label %return
+
+return:                                           ; preds = %while.end
+  ret void
+}
+
+define void @output() {
+entry:
+  %i = alloca i32
+  call void @putch(i8 97)
+  call void @putch(i8 102)
+  call void @putch(i8 116)
+  call void @putch(i8 101)
+  call void @putch(i8 114)
+  call void @putch(i8 32)
+  call void @putch(i8 115)
+  call void @putch(i8 111)
+  call void @putch(i8 114)
+  call void @putch(i8 116)
+  call void @putch(i8 58)
+  call void @putch(i8 10)
+  store i32 0, i32* %i
+  br label %while.cond
+
+while.cond:                                       ; preds = %while.loop, %entry
+  %i1 = load i32, i32* %i
+  %n = load i32, i32* @n
+  %icmplt = icmp slt i32 %i1, %n
+  %zext = zext i1 %icmplt to i32
+  %whilecond = icmp ne i32 %zext, 0
+  br i1 %whilecond, label %while.loop, label %while.end
+
+while.loop:                                       ; preds = %while.cond
+  %i2 = load i32, i32* %i
+  %gepinbounds = getelementptr inbounds [10 x i32], [10 x i32]* @arr, i32 0, i32 %i2
+  %arr = load i32, i32* %gepinbounds
+  call void @puti(i32 %arr)
+  call void @putch(i8 32)
+  %i3 = load i32, i32* %i
+  %add = add i32 %i3, 1
+  store i32 %add, i32* %i
+  br label %while.cond
+
+while.end:                                        ; preds = %while.cond
+  call void @putch(i8 10)
+  br label %return
+
+return:                                           ; preds = %while.end
+  ret void
+}
+
+define void @quickSort(i32 %l, i32 %r) {
+entry:
+  %l1 = alloca i32
+  %r2 = alloca i32
+  store i32 %l, i32* %l1
+  store i32 %r, i32* %r2
+  %base = alloca i32
+  %i = alloca i32
+  %j = alloca i32
+  %temp = alloca i32
+  %l3 = load i32, i32* %l1
+  %r4 = load i32, i32* %r2
+  %icmpge = icmp sge i32 %l3, %r4
+  %zext = zext i1 %icmpge to i32
+  %ifcond = icmp ne i32 %zext, 0
+  br i1 %ifcond, label %then, label %ifcont
+
+then:                                             ; preds = %entry
+  br label %return
+
+ifcont:                                           ; preds = %entry
+  %l5 = load i32, i32* %l1
+  store i32 %l5, i32* %base
+  %l6 = load i32, i32* %l1
+  store i32 %l6, i32* %i
+  %r7 = load i32, i32* %r2
+  store i32 %r7, i32* %j
+  br label %while.cond
+
+while.cond:                                       ; preds = %while.end45, %ifcont
+  %i8 = load i32, i32* %i
+  %j9 = load i32, i32* %j
+  %icmplt = icmp slt i32 %i8, %j9
+  %zext10 = zext i1 %icmplt to i32
+  %whilecond = icmp ne i32 %zext10, 0
+  br i1 %whilecond, label %while.loop, label %while.end59
+
+while.loop:                                       ; preds = %while.cond
+  br label %while.cond11
+
+while.cond11:                                     ; preds = %while.loop24, %while.loop
+  %i12 = load i32, i32* %i
+  %j13 = load i32, i32* %j
+  %icmplt14 = icmp slt i32 %i12, %j13
+  %zext15 = zext i1 %icmplt14 to i32
+  %j16 = load i32, i32* %j
+  %gepinbounds = getelementptr inbounds [10 x i32], [10 x i32]* @arr, i32 0, i32 %j16
+  %arr = load i32, i32* %gepinbounds
+  %base17 = load i32, i32* %base
+  %gepinbounds18 = getelementptr inbounds [10 x i32], [10 x i32]* @arr, i32 0, i32 %base17
+  %arr19 = load i32, i32* %gepinbounds18
+  %icmpgt = icmp sgt i32 %arr, %arr19
+  %zext20 = zext i1 %icmpgt to i32
+  %icmpne = icmp ne i32 %zext15, 0
+  %icmpne21 = icmp ne i32 %zext20, 0
+  %and = and i1 %icmpne, %icmpne21
+  %zext22 = zext i1 %and to i32
+  %whilecond23 = icmp ne i32 %zext22, 0
+  br i1 %whilecond23, label %while.loop24, label %while.end
+
+while.loop24:                                     ; preds = %while.cond11
+  %j25 = load i32, i32* %j
+  %sub = sub i32 %j25, 1
+  store i32 %sub, i32* %j
+  br label %while.cond11
+
+while.end:                                        ; preds = %while.cond11
+  br label %while.cond26
+
+while.cond26:                                     ; preds = %while.loop43, %while.end
+  %i27 = load i32, i32* %i
+  %j28 = load i32, i32* %j
+  %icmplt29 = icmp slt i32 %i27, %j28
+  %zext30 = zext i1 %icmplt29 to i32
+  %i31 = load i32, i32* %i
+  %gepinbounds32 = getelementptr inbounds [10 x i32], [10 x i32]* @arr, i32 0, i32 %i31
+  %arr33 = load i32, i32* %gepinbounds32
+  %base34 = load i32, i32* %base
+  %gepinbounds35 = getelementptr inbounds [10 x i32], [10 x i32]* @arr, i32 0, i32 %base34
+  %arr36 = load i32, i32* %gepinbounds35
+  %icmple = icmp sle i32 %arr33, %arr36
+  %zext37 = zext i1 %icmple to i32
+  %icmpne38 = icmp ne i32 %zext30, 0
+  %icmpne39 = icmp ne i32 %zext37, 0
+  %and40 = and i1 %icmpne38, %icmpne39
+  %zext41 = zext i1 %and40 to i32
+  %whilecond42 = icmp ne i32 %zext41, 0
+  br i1 %whilecond42, label %while.loop43, label %while.end45
+
+while.loop43:                                     ; preds = %while.cond26
+  %i44 = load i32, i32* %i
+  %add = add i32 %i44, 1
+  store i32 %add, i32* %i
+  br label %while.cond26
+
+while.end45:                                      ; preds = %while.cond26
+  %i46 = load i32, i32* %i
+  %gepinbounds47 = getelementptr inbounds [10 x i32], [10 x i32]* @arr, i32 0, i32 %i46
+  %arr48 = load i32, i32* %gepinbounds47
+  store i32 %arr48, i32* %temp
+  %i49 = load i32, i32* %i
+  %gepinbounds50 = getelementptr inbounds [10 x i32], [10 x i32]* @arr, i32 0, i32 %i49
+  %j51 = load i32, i32* %j
+  %gepinbounds52 = getelementptr inbounds [10 x i32], [10 x i32]* @arr, i32 0, i32 %j51
+  %arr53 = load i32, i32* %gepinbounds52
+  store i32 %arr53, i32* %gepinbounds50
+  %j54 = load i32, i32* %j
+  %gepinbounds55 = getelementptr inbounds [10 x i32], [10 x i32]* @arr, i32 0, i32 %j54
+  %temp56 = load i32, i32* %temp
+  store i32 %temp56, i32* %gepinbounds55
+  %j57 = load i32, i32* %j
+  %sub58 = sub i32 %j57, 1
+  store i32 %sub58, i32* %j
+  br label %while.cond
+
+while.end59:                                      ; preds = %while.cond
+  %base60 = load i32, i32* %base
+  %gepinbounds61 = getelementptr inbounds [10 x i32], [10 x i32]* @arr, i32 0, i32 %base60
+  %arr62 = load i32, i32* %gepinbounds61
+  store i32 %arr62, i32* %temp
+  %base63 = load i32, i32* %base
+  %gepinbounds64 = getelementptr inbounds [10 x i32], [10 x i32]* @arr, i32 0, i32 %base63
+  %i65 = load i32, i32* %i
+  %gepinbounds66 = getelementptr inbounds [10 x i32], [10 x i32]* @arr, i32 0, i32 %i65
+  %arr67 = load i32, i32* %gepinbounds66
+  store i32 %arr67, i32* %gepinbounds64
+  %i68 = load i32, i32* %i
+  %gepinbounds69 = getelementptr inbounds [10 x i32], [10 x i32]* @arr, i32 0, i32 %i68
+  %temp70 = load i32, i32* %temp
+  store i32 %temp70, i32* %gepinbounds69
+  %i71 = load i32, i32* %i
+  store i32 %i71, i32* %base
+  %l72 = load i32, i32* %l1
+  %base73 = load i32, i32* %base
+  %sub74 = sub i32 %base73, 1
+  call void @quickSort(i32 %l72, i32 %sub74)
+  %base75 = load i32, i32* %base
+  %add76 = add i32 %base75, 1
+  %r77 = load i32, i32* %r2
+  call void @quickSort(i32 %add76, i32 %r77)
+  br label %return
+
+return:                                           ; preds = %while.end59, %then
+  ret void
+}

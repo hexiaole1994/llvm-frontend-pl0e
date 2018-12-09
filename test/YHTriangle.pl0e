@@ -1,0 +1,60 @@
+# print n lines Yang-Hui-Triangle(n<=100)
+INT i;
+INT old[25],new[25];
+
+PROCEDURE VOID copy(INT n);
+INT i;
+BEGIN
+i=0;
+WHILE i < n DO
+  BEGIN
+  old[i]=new[i];
+  i=i+1
+  END
+END;
+
+PROCEDURE VOID print(INT n);
+INT i,j;
+INT tmp;
+BEGIN
+i=0;
+WHILE i < n DO
+  BEGIN
+  j=0;
+  WHILE j <= i DO
+    BEGIN
+    IF j==0 || j==i THEN
+      BEGIN
+      ! '1';! '\t';
+      new[j]=1
+      END
+    ELSE
+      BEGIN
+      tmp=old[j-1]+old[j];
+      new[j]=tmp;
+      ! tmp;! '\t'
+      END;
+    j=j+1
+    END;
+  CALL copy(j);
+  i=i+1;
+  ! '\n'
+  END
+END;
+
+PROCEDURE VOID input();
+BEGIN
+! 'p';! 'r';! 'i';! 'n';! 't';! ' ';
+! 'n';! ' ';
+! 'l';! 'i';! 'n';! 'e';! 's';! ' ';
+! 'Y';! 'a';! 'n';! 'g';! '-';! 'H';! 'u';! 'i';! '-';! 'T';! 'r';! 'i';! 'a';! 'n';! 'g';! 'l';! 'e';! ',';
+! 'i';! 'n';! 'p';! 'u';! 't';! ' ';
+! 'n';! '(';! 'n';! '<';! '=';! '2';! '5';! ')';! ':';
+? i
+END;
+
+BEGIN
+CALL input();
+CALL print(i)
+END
+.

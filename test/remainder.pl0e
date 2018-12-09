@@ -1,0 +1,11 @@
+INT a,b;
+INT res;
+
+WHILE 1 DO
+  BEGIN
+  ? a;? b;
+  res=a%b;
+  !res;
+  ! '\n'
+  END
+.

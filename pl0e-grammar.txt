@@ -1,0 +1,59 @@
+# The grammar of pl0e compiler supports, written in EBNF(Extended Backus-Naur Form) format
+# For more information about EBNF, please see the wiki page, "https://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_form"
+
+program = block "."   						# the core symbol, "program", all program begin from it
+
+block = { type var  { "," var } ";" } { proc } stat		# the braces, "{" and "}", means the content within them can appear >= 0 times, for example, you can define many "proc"
+
+var = ident { "[" num "]" }					# "var" for variable, it is for variable or array declaration
+
+proc = "PROCEDURE" proc_sig ";" block ";"			# "proc" for procedure, it is for procedure or function definition
+
+proc_sig = type ident "(" [ type ident { "," type ident} ] ")"  # "proc_sig" for procedure signature, means the procedure return type, name, and arguments, brackets, "[" and "]",
+								# means the content within them can appear 0 or 1 times
+
+stat = var_expr "=" expr					# stat for statement, it is for statement definition
+     | "CALL" ident "(" [ expr { "," expr } ] ")"    		# call procedure statement
+     | "RET" expr						# return from procedure statement
+     | "BEGIN" stat { ";" stat } "END"				# multi-statement, for define multiple statement in a "stat"
+     | "IF" expr "THEN" stat [ "ELSE" stat ]			# if statement
+     | "WHILE" expr "DO" stat					# while loop statement
+     | "?" var_expr				     		# input statement, says you have an array, defined as INT a[5][10], then you can read data into array by "? a[0][0]"
+     | "!" ( var_expr | char )			     		# output statement, print the value of variable or a char constant, for example, you have INT i, you want to print i and a newline character,
+						    		# then you can do, "! i; ! '\n'", okay, it seems a little cumbersome
+
+var_expr = ident { "[" expr "]" }				# reference to value of variable or array element
+
+expr = var_expr							# expr for expression
+     | num
+     | "(" expr ")"
+     | expr op expr						# binary expression
+     | "CALL" ident "(" [ expr { "," expr } ] ")"
+
+type = "INT"
+     | "DOUBLE"
+     | "VOID"
+
+char = letter
+     | '\n'
+     | '\t'
+     | '\''
+
+op = "+"
+   | "-"
+   | "%"
+   | "*"
+   | "/"
+   | "=="
+   | "!="
+   | ">"
+   | ">="
+   | "<"
+   | "<="
+   | "&&"
+   | "||"
+
+letter = a~z 
+       | A~Z
+
+digit = 0~9

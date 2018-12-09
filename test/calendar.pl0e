@@ -1,0 +1,291 @@
+# print the calendar of specified year
+INT year;
+
+PROCEDURE VOID input();
+BEGIN
+! 'p';! 'r';! 'i';! 'n';! 't';! ' ';
+! 't';! 'h';! 'e';! ' ';
+! 'c';! 'a';! 'l';! 'e';! 'n';! 'd';! 'a';! 'r';! ' ';
+! 'o';! 'f';! ' ';
+! 'i';! 'n';! 'p';! 'u';! 't';! ' ';
+! 'y';! 'e';! 'a';! 'r';! ':';
+? year
+END;
+
+PROCEDURE INT isLeapYear(INT year);
+BEGIN
+IF year%100!=0 && year%4==0 || year%400==0 THEN
+  RET 1;
+RET 0
+END;
+
+PROCEDURE INT getFirstDayIdx(INT year);
+INT baseYear;
+INT daySum;
+INT res;
+BEGIN
+baseYear=1800;
+daySum=0;
+WHILE baseYear < year DO
+  BEGIN
+  IF CALL isLeapYear(baseYear) THEN
+    daySum=daySum+366
+  ELSE
+    daySum=daySum+365;
+  baseYear=baseYear+1
+  END;
+res=(daySum%7+3)%7;
+IF res == 0 THEN
+  res=7;
+RET res
+END;
+
+PROCEDURE VOID printSpace(INT n);
+INT i;
+BEGIN
+i=0;
+WHILE i < n DO
+  BEGIN
+  ! ' ';
+  i=i+1
+  END
+END;
+
+PROCEDURE VOID print3Week();
+BEGIN
+! 'M';! 'o';! ' ';! 'T';! 'u';! ' ';! 'W';! 'e';! ' ';! 'T';! 'h';! ' ';! 'F';! 'r';! ' ';! 'S';! 'a';! ' ';! 'S';! 'u';CALL printSpace(3);
+! 'M';! 'o';! ' ';! 'T';! 'u';! ' ';! 'W';! 'e';! ' ';! 'T';! 'h';! ' ';! 'F';! 'r';! ' ';! 'S';! 'a';! ' ';! 'S';! 'u';CALL printSpace(3);
+! 'M';! 'o';! ' ';! 'T';! 'u';! ' ';! 'W';! 'e';! ' ';! 'T';! 'h';! ' ';! 'F';! 'r';! ' ';! 'S';! 'a';! ' ';! 'S';! 'u';! '\n';
+! '-';! '-';! ' ';! '-';! '-';! ' ';! '-';! '-';! ' ';! '-';! '-';! ' ';! '-';! '-';! ' ';! '-';! '-';! ' ';! '-';! '-';CALL printSpace(3);
+! '-';! '-';! ' ';! '-';! '-';! ' ';! '-';! '-';! ' ';! '-';! '-';! ' ';! '-';! '-';! ' ';! '-';! '-';! ' ';! '-';! '-';CALL printSpace(3);
+! '-';! '-';! ' ';! '-';! '-';! ' ';! '-';! '-';! ' ';! '-';! '-';! ' ';! '-';! '-';! ' ';! '-';! '-';! ' ';! '-';! '-';! '\n'
+END;
+
+PROCEDURE VOID printYearInfo(INT year);
+BEGIN
+! '\n';
+CALL printSpace(31);! year;! '\n';
+CALL printSpace(31);! '-';! '-';! '-';! '-';! '\n'
+END;
+
+PROCEDURE VOID printSeason(INT n);
+BEGIN
+IF n==0 THEN
+  BEGIN
+  CALL printSpace(6);! 'J';! 'a';! 'n';! 'u';! 'a';! 'r';! 'y';		CALL printSpace(7);CALL printSpace(3);
+  CALL printSpace(6);! 'F';! 'e';! 'b';! 'r';! 'u';! 'a';! 'r';! 'y';	CALL printSpace(6);CALL printSpace(3);
+  CALL printSpace(6);! 'M';! 'a';! 'r';! 'c';! 'h';! '\n';
+  CALL printSpace(6);! '-';! '-';! '-';! '-';! '-';! '-';! '-';		CALL printSpace(7);CALL printSpace(3);
+  CALL printSpace(6);! '-';! '-';! '-';! '-';! '-';! '-';! '-';! '-';	CALL printSpace(6);CALL printSpace(3);
+  CALL printSpace(6);! '-';! '-';! '-';! '-';! '-';! '\n'
+  END;
+
+IF n==1 THEN
+  BEGIN
+  CALL printSpace(6);! 'A';! 'p';! 'r';! 'i';! 'l';	CALL printSpace(9);CALL printSpace(3);
+  CALL printSpace(6);! 'M';! 'a';! 'y';			CALL printSpace(11);CALL printSpace(3);
+  CALL printSpace(6);! 'J';! 'u';! 'n';! 'e';! '\n';
+  CALL printSpace(6);! '-';! '-';! '-';! '-';! '-';	CALL printSpace(9);CALL printSpace(3);
+  CALL printSpace(6);! '-';! '-';! '-';			CALL printSpace(11);CALL printSpace(3);
+  CALL printSpace(6);! '-';! '-';! '-';! '-';! '\n'
+  END;
+
+IF n==2 THEN
+  BEGIN
+  CALL printSpace(6);! 'J';! 'u';! 'l';! 'y';						CALL printSpace(10);CALL printSpace(3);
+  CALL printSpace(6);! 'A';! 'u';! 'g';! 'u';! 's';! 't';				CALL printSpace(8);CALL printSpace(3);
+  CALL printSpace(6);! 'S';! 'e';! 'p';! 't';! 'e';! 'm';! 'b';! 'e';! 'r';! '\n';
+  CALL printSpace(6);! '-';! '-';! '-';! '-';						CALL printSpace(10);CALL printSpace(3);
+  CALL printSpace(6);! '-';! '-';! '-';! '-';! '-';! '-';				CALL printSpace(8);CALL printSpace(3);
+  CALL printSpace(6);! '-';! '-';! '-';! '-';! '-';! '-';! '-';! '-';! '-';! '\n'
+  END;
+
+IF n==3 THEN
+  BEGIN
+  CALL printSpace(6);! 'O';! 'c';! 't';! 'o';! 'b';! 'e';! 'r';				CALL printSpace(7);CALL printSpace(3);
+  CALL printSpace(6);! 'N';! 'o';! 'v';! 'e';! 'm';! 'b';! 'e';! 'r';			CALL printSpace(6);CALL printSpace(3);
+  CALL printSpace(6);! 'D';! 'e';! 'c';! 'e';! 'm';! 'b';! 'e';! 'r';! '\n';
+  CALL printSpace(6);! '-';! '-';! '-';! '-';! '-';! '-';! '-';				CALL printSpace(7);CALL printSpace(3);
+  CALL printSpace(6);! '-';! '-';! '-';! '-';! '-';! '-';! '-';! '-';			CALL printSpace(6);CALL printSpace(3);
+  CALL printSpace(6);! '-';! '-';! '-';! '-';! '-';! '-';! '-';! '-';! '\n'
+  END;
+
+CALL print3Week()
+
+END;
+
+PROCEDURE INT getDays(INT month);
+IF month==2 THEN
+  IF CALL isLeapYear(year) THEN
+    RET 29
+  ELSE
+    RET 28
+ELSE
+  IF month==4 || month==6 || month==9 || month==11 THEN
+    RET 30
+  ELSE
+    RET 31;
+
+PROCEDURE VOID printCalendar();
+INT FirstDays,SecondDays,ThirdDays;
+INT FirstCurDate,SecondCurDate,ThirdCurDate;
+INT FirstDateIdx,SecondDateIdx,ThirdDateIdx;
+INT FirstEnd,SecondEnd,ThirdEnd;
+INT i;
+BEGIN
+i=0;
+CALL printYearInfo(year);
+
+WHILE i < 4 DO
+  BEGIN
+  CALL printSeason(i);
+  
+  FirstDays=CALL getDays(i*3+1);
+  SecondDays=CALL getDays(i*3+2);
+  ThirdDays=CALL getDays(i*3+3);
+  
+  FirstCurDate=1;SecondCurDate=1;ThirdCurDate=1;
+  
+  IF i==0 THEN
+    FirstDateIdx=CALL getFirstDayIdx(year)
+  ELSE
+    BEGIN
+    FirstDateIdx=ThirdDateIdx%7;
+    IF FirstDateIdx == 0 THEN
+      FirstDateIdx=7
+    END;
+  SecondDateIdx=(FirstDateIdx+FirstDays)%7;
+  IF SecondDateIdx == 0 THEN
+    SecondDateIdx=7;
+  ThirdDateIdx=(SecondDateIdx+SecondDays)%7;
+  IF ThirdDateIdx == 0 THEN
+    ThirdDateIdx=7;
+  
+  FirstEnd=0;
+  SecondEnd=0;
+  ThirdEnd=0;
+  
+  CALL printSpace((FirstDateIdx-1)*3);
+  WHILE FirstDateIdx <= 7 DO
+    BEGIN
+    ! FirstCurDate;
+    CALL printSpace(2);
+    FirstCurDate=FirstCurDate+1;
+    FirstDateIdx=FirstDateIdx+1
+    END;
+  FirstDateIdx=1;
+  CALL printSpace(2);
+  
+  CALL printSpace((SecondDateIdx-1)*3);
+  WHILE SecondDateIdx <= 7 DO
+    BEGIN
+    ! SecondCurDate;
+    CALL printSpace(2);
+    SecondCurDate=SecondCurDate+1;
+    SecondDateIdx=SecondDateIdx+1
+    END;
+  SecondDateIdx=1;
+  CALL printSpace(2);
+  
+  CALL printSpace((ThirdDateIdx-1)*3);
+  WHILE ThirdDateIdx <= 7 DO
+    BEGIN
+    ! ThirdCurDate;
+    CALL printSpace(2);
+    ThirdCurDate=ThirdCurDate+1;
+    ThirdDateIdx=ThirdDateIdx+1
+    END;
+  ThirdDateIdx=1;
+  ! '\n';
+  
+  WHILE FirstEnd!=1 || SecondEnd!=1 || ThirdEnd!=1 DO
+    BEGIN
+    
+    IF FirstEnd!=1 THEN
+      BEGIN
+      WHILE FirstCurDate <= FirstDays && FirstDateIdx <= 7 DO
+        BEGIN
+        ! FirstCurDate;
+        IF FirstCurDate > 9 THEN
+          CALL printSpace(1)
+        ELSE
+    	CALL printSpace(2);
+        IF FirstCurDate == FirstDays THEN
+          BEGIN
+          FirstEnd=1;
+    	CALL printSpace((7-FirstDateIdx+1)*3-1)
+     	END;
+        FirstCurDate=FirstCurDate+1;
+        FirstDateIdx=FirstDateIdx+1
+        END;
+      
+        IF FirstEnd==0 THEN
+          BEGIN
+          FirstDateIdx=1;
+    	CALL printSpace(2)
+    	END
+      END
+    ELSE
+      CALL printSpace(23);
+  
+    IF SecondEnd!=1 THEN
+      BEGIN
+      WHILE SecondCurDate <= SecondDays && SecondDateIdx <= 7 DO
+        BEGIN
+        ! SecondCurDate;
+        IF SecondCurDate > 9 THEN
+          CALL printSpace(1)
+        ELSE
+  	CALL printSpace(2);
+        IF SecondCurDate == SecondDays THEN
+          BEGIN
+          SecondEnd=1;
+  	CALL printSpace((7-SecondDateIdx+1)*3-1)
+  	END;
+        SecondCurDate=SecondCurDate+1;
+        SecondDateIdx=SecondDateIdx+1
+        END;
+  
+        IF SecondEnd==0 THEN
+          BEGIN
+          SecondDateIdx=1;
+          CALL printSpace(2)
+          END
+      END
+    ELSE
+      CALL printSpace(23);
+  
+    IF ThirdEnd!=1 THEN
+      BEGIN
+      WHILE ThirdCurDate <= ThirdDays && ThirdDateIdx <= 7 DO
+        BEGIN
+        ! ThirdCurDate;
+        IF ThirdCurDate > 9 THEN
+          CALL printSpace(1)
+        ELSE
+  	CALL printSpace(2);
+        IF ThirdCurDate == ThirdDays THEN
+          ThirdEnd=1;
+        ThirdCurDate=ThirdCurDate+1;
+        ThirdDateIdx=ThirdDateIdx+1
+        END;
+  
+        IF ThirdEnd==0 THEN
+          BEGIN
+          ThirdDateIdx=1
+          END
+      END;
+    ! '\n'
+    END;
+  
+  i=i+1;
+  ! '\n'
+  END
+END;
+
+BEGIN
+CALL input();
+CALL printCalendar()
+END
+.
+abc

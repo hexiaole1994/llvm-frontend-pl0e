@@ -1,0 +1,61 @@
+# compute gcd of a and b
+INT a,b;
+INT res;
+
+PROCEDURE INT gcd(INT a,INT b);
+DOUBLE da,db,dres;
+INT ires;
+INT temp;
+BEGIN
+IF a<b THEN
+  BEGIN
+  temp=a;
+  a=b;
+  b=temp
+  END;
+
+da=a;
+db=b;
+
+dres=da/db;
+ires=a/b;
+
+IF dres-ires == 0 THEN
+  RET b;
+
+RET CALL gcd(b,a-b*ires)
+END;
+
+PROCEDURE VOID input();
+BEGIN
+! 'i';! 'n';! 'p';! 'u';! 't';! ' ';
+! 'a';! ',';! 'b';! ':';! '\n';
+? a;? b
+END;
+
+PROCEDURE VOID output();
+BEGIN
+! 'g';! 'c';! 'd';! ':';! '\n';
+! res;! '\n'
+END;
+
+BEGIN
+! 'c';! 'o';! 'm';! 'p';! 'u';! 't';! 'e';! ' ';
+! 'g';! 'c';! 'd';! ' ';
+! 'o';! 'f';! ' ';
+! 'a';! ' ';
+! 'a';! 'n';! 'd';! '';
+! 'b';! ',';
+! 'i';! 'n';! 'p';! 'u';! 't';! ' ';
+! '-';! '1';! ' ';! '-';! '1';! ' ';
+! 't';! 'o';! ' ';
+! 'f';! 'i';! 'n';! 'i';! 's';! 'h';! '\n';
+CALL input();
+WHILE a != -1 || b != -1 DO
+  BEGIN
+  res=CALL gcd(a,b);
+  CALL output();
+  CALL input()
+  END
+END
+.

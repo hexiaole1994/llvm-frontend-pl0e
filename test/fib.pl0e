@@ -1,0 +1,40 @@
+# print first n fib num
+INT n;
+INT res;
+INT num;
+INT i;
+
+PROCEDURE INT fib(INT n);
+IF n<3 THEN
+  RET 1
+ELSE
+  RET CALL fib(n-1) + CALL fib(n-2);
+
+PROCEDURE VOID input();
+BEGIN
+! 'p';! 'r';! 'i';! 'n';! 't';! ' ';
+! 'f';! 'i';! 'r';! 's';! 't';! ' ';
+! 'n';! ' ';
+! 'f';! 'i';! 'b';! ' ';
+! 'n';! 'u';! 'm';! ',';
+! 'i';! 'n';! 'p';! 'u';! 't';! ' ';
+! 'n';! ':';! '\n';
+? n
+END;
+
+BEGIN
+CALL input();
+
+num=1;
+i=0;
+WHILE num <= n DO
+  BEGIN
+  res=CALL fib(num);
+  ! res;! '\t';! '\t';
+  num=num+1;
+  i=i+1;
+  IF i%5 == 0 THEN
+    ! '\n'
+  END
+END
+.

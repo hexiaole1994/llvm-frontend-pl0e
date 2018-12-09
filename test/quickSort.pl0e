@@ -1,0 +1,85 @@
+# sort n int num using quick sort algorithm(n<=10)
+INT arr[10];
+INT n;
+
+PROCEDURE VOID input();
+INT i;
+BEGIN
+! 'i';! 'n';! 'p';! 'u';! 't';! ' ';
+! 'n';! ' ';
+! 'n';! 'u';! 'm';! ' ';
+! 'f';! 'o';! 'r';! ' ';
+! 'q';! 'u';! 'i';! 'c';! 'k';! ' ';
+! 's';! 'o';! 'r';! 't';! ',';
+! '-';! '1';! ' ';
+! 't';! 'o';! ' ';
+! 'f';! 'i';! 'n';! 'i';! 's';! 'h';
+! '(';! 'n';! '<';! '=';! '1';! '0';! ')';! ':';! '\n';
+? i;
+WHILE i != -1 && n < 10 DO
+  BEGIN
+  arr[n]=i;
+  n=n+1;
+  ? i
+  END
+END;
+
+PROCEDURE VOID output();
+INT i;
+BEGIN
+! 'a';! 'f';! 't';! 'e';! 'r';! ' ';
+! 's';! 'o';! 'r';! 't';! ':';! '\n';
+i=0;
+WHILE i<n DO
+  BEGIN
+  ! arr[i];
+  ! ' ';
+  i=i+1
+  END;
+  ! '\n'
+END;
+
+PROCEDURE VOID quickSort(INT l,INT r);
+INT base;
+INT i,j;
+INT temp;
+BEGIN
+IF l>=r THEN
+  RET VOID;
+
+base=l;
+i=l;
+j=r;
+WHILE i<j DO
+  BEGIN
+  WHILE i < j && arr[j] > arr[base] DO
+      j=j-1;
+
+  WHILE i < j && arr[i] <= arr[base] DO
+      i=i+1;
+  
+  temp=arr[i];
+  arr[i]=arr[j];
+  arr[j]=temp;
+
+  j=j-1
+  END;
+
+temp=arr[base];
+arr[base]=arr[i];
+arr[i]=temp;
+
+base=i;
+
+CALL quickSort(l,base-1);
+CALL quickSort(base+1,r)
+END;
+
+# main block
+BEGIN
+n=0;
+CALL input();
+CALL quickSort(0,n-1);
+CALL output()
+END
+.

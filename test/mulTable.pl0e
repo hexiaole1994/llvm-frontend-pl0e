@@ -1,0 +1,26 @@
+# print Chinese multiplication table
+INT i,j;
+INT res;
+
+BEGIN
+i=1;
+WHILE i <= 9 DO
+  BEGIN
+  j=1;
+  WHILE j <= i DO
+    BEGIN
+    res=i*j;
+    ! i;! 'x';! j;! '=';! res;
+    j=j+1;
+    IF res <= 9 THEN
+      BEGIN
+      ! ' ';! ' '
+      END   
+    ELSE
+      ! ' '
+    END;
+  i=i+1;
+  ! '\n'
+  END
+END
+.

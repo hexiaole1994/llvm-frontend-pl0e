@@ -1,0 +1,471 @@
+; ModuleID = 'llvm module'
+source_filename = "llvm module"
+
+@B = internal global [4 x [4 x i32]] zeroinitializer
+@A = internal global [4 x [4 x i32]] zeroinitializer
+@i = internal global i32 0
+
+declare void @getf(double*)
+
+declare void @geti(i32*)
+
+declare void @putf(double)
+
+declare void @puti(i32)
+
+declare void @putch(i8)
+
+declare i32 @getrem(i32, i32)
+
+declare double @sqrt(double)
+
+define void @main() {
+entry:
+  call void @initB()
+  call void @printB()
+  call void @select()
+  br label %while.cond
+
+while.cond:                                       ; preds = %ifcont8, %entry
+  %i = load i32, i32* @i
+  %icmpne = icmp ne i32 %i, 0
+  %zext = zext i1 %icmpne to i32
+  %whilecond = icmp ne i32 %zext, 0
+  br i1 %whilecond, label %while.loop, label %while.end
+
+while.loop:                                       ; preds = %while.cond
+  %i1 = load i32, i32* @i
+  %icmpeq = icmp eq i32 %i1, 1
+  %zext2 = zext i1 %icmpeq to i32
+  %ifcond = icmp ne i32 %zext2, 0
+  br i1 %ifcond, label %then, label %ifcont
+
+then:                                             ; preds = %while.loop
+  call void @clockwiseB()
+  call void @printBA()
+  call void @cloneAB()
+  br label %ifcont
+
+ifcont:                                           ; preds = %then, %while.loop
+  %i3 = load i32, i32* @i
+  %icmpeq4 = icmp eq i32 %i3, -1
+  %zext5 = zext i1 %icmpeq4 to i32
+  %ifcond6 = icmp ne i32 %zext5, 0
+  br i1 %ifcond6, label %then7, label %ifcont8
+
+then7:                                            ; preds = %ifcont
+  call void @anticlockwiseB()
+  call void @printBA()
+  call void @cloneAB()
+  br label %ifcont8
+
+ifcont8:                                          ; preds = %then7, %ifcont
+  call void @select()
+  br label %while.cond
+
+while.end:                                        ; preds = %while.cond
+  ret void
+}
+
+define void @printB() {
+entry:
+  %i = alloca i32
+  %j = alloca i32
+  store i32 0, i32* %i
+  br label %while.cond
+
+while.cond:                                       ; preds = %while.end, %entry
+  %i1 = load i32, i32* %i
+  %icmplt = icmp slt i32 %i1, 4
+  %zext = zext i1 %icmplt to i32
+  %whilecond = icmp ne i32 %zext, 0
+  br i1 %whilecond, label %while.loop, label %while.end13
+
+while.loop:                                       ; preds = %while.cond
+  store i32 0, i32* %j
+  br label %while.cond2
+
+while.cond2:                                      ; preds = %while.loop7, %while.loop
+  %j3 = load i32, i32* %j
+  %icmplt4 = icmp slt i32 %j3, 4
+  %zext5 = zext i1 %icmplt4 to i32
+  %whilecond6 = icmp ne i32 %zext5, 0
+  br i1 %whilecond6, label %while.loop7, label %while.end
+
+while.loop7:                                      ; preds = %while.cond2
+  %i8 = load i32, i32* %i
+  %j9 = load i32, i32* %j
+  %gepinbounds = getelementptr inbounds [4 x [4 x i32]], [4 x [4 x i32]]* @B, i32 0, i32 %i8, i32 %j9
+  %B = load i32, i32* %gepinbounds
+  call void @puti(i32 %B)
+  %j10 = load i32, i32* %j
+  %add = add i32 %j10, 1
+  store i32 %add, i32* %j
+  call void @putch(i8 9)
+  br label %while.cond2
+
+while.end:                                        ; preds = %while.cond2
+  %i11 = load i32, i32* %i
+  %add12 = add i32 %i11, 1
+  store i32 %add12, i32* %i
+  call void @putch(i8 10)
+  br label %while.cond
+
+while.end13:                                      ; preds = %while.cond
+  br label %return
+
+return:                                           ; preds = %while.end13
+  ret void
+}
+
+define void @printA() {
+entry:
+  %i = alloca i32
+  %j = alloca i32
+  store i32 0, i32* %i
+  br label %while.cond
+
+while.cond:                                       ; preds = %while.end, %entry
+  %i1 = load i32, i32* %i
+  %icmplt = icmp slt i32 %i1, 4
+  %zext = zext i1 %icmplt to i32
+  %whilecond = icmp ne i32 %zext, 0
+  br i1 %whilecond, label %while.loop, label %while.end13
+
+while.loop:                                       ; preds = %while.cond
+  store i32 0, i32* %j
+  br label %while.cond2
+
+while.cond2:                                      ; preds = %while.loop7, %while.loop
+  %j3 = load i32, i32* %j
+  %icmplt4 = icmp slt i32 %j3, 4
+  %zext5 = zext i1 %icmplt4 to i32
+  %whilecond6 = icmp ne i32 %zext5, 0
+  br i1 %whilecond6, label %while.loop7, label %while.end
+
+while.loop7:                                      ; preds = %while.cond2
+  %i8 = load i32, i32* %i
+  %j9 = load i32, i32* %j
+  %gepinbounds = getelementptr inbounds [4 x [4 x i32]], [4 x [4 x i32]]* @A, i32 0, i32 %i8, i32 %j9
+  %A = load i32, i32* %gepinbounds
+  call void @puti(i32 %A)
+  %j10 = load i32, i32* %j
+  %add = add i32 %j10, 1
+  store i32 %add, i32* %j
+  call void @putch(i8 9)
+  br label %while.cond2
+
+while.end:                                        ; preds = %while.cond2
+  %i11 = load i32, i32* %i
+  %add12 = add i32 %i11, 1
+  store i32 %add12, i32* %i
+  call void @putch(i8 10)
+  br label %while.cond
+
+while.end13:                                      ; preds = %while.cond
+  br label %return
+
+return:                                           ; preds = %while.end13
+  ret void
+}
+
+define void @initB() {
+entry:
+  store i32 1, i32* getelementptr inbounds ([4 x [4 x i32]], [4 x [4 x i32]]* @B, i32 0, i32 0, i32 0)
+  store i32 2, i32* getelementptr inbounds ([4 x [4 x i32]], [4 x [4 x i32]]* @B, i32 0, i32 0, i32 1)
+  store i32 3, i32* getelementptr inbounds ([4 x [4 x i32]], [4 x [4 x i32]]* @B, i32 0, i32 0, i32 2)
+  store i32 4, i32* getelementptr inbounds ([4 x [4 x i32]], [4 x [4 x i32]]* @B, i32 0, i32 0, i32 3)
+  store i32 5, i32* getelementptr inbounds ([4 x [4 x i32]], [4 x [4 x i32]]* @B, i32 0, i32 1, i32 0)
+  store i32 6, i32* getelementptr inbounds ([4 x [4 x i32]], [4 x [4 x i32]]* @B, i32 0, i32 1, i32 1)
+  store i32 7, i32* getelementptr inbounds ([4 x [4 x i32]], [4 x [4 x i32]]* @B, i32 0, i32 1, i32 2)
+  store i32 8, i32* getelementptr inbounds ([4 x [4 x i32]], [4 x [4 x i32]]* @B, i32 0, i32 1, i32 3)
+  store i32 9, i32* getelementptr inbounds ([4 x [4 x i32]], [4 x [4 x i32]]* @B, i32 0, i32 2, i32 0)
+  store i32 10, i32* getelementptr inbounds ([4 x [4 x i32]], [4 x [4 x i32]]* @B, i32 0, i32 2, i32 1)
+  store i32 11, i32* getelementptr inbounds ([4 x [4 x i32]], [4 x [4 x i32]]* @B, i32 0, i32 2, i32 2)
+  store i32 12, i32* getelementptr inbounds ([4 x [4 x i32]], [4 x [4 x i32]]* @B, i32 0, i32 2, i32 3)
+  store i32 13, i32* getelementptr inbounds ([4 x [4 x i32]], [4 x [4 x i32]]* @B, i32 0, i32 3, i32 0)
+  store i32 14, i32* getelementptr inbounds ([4 x [4 x i32]], [4 x [4 x i32]]* @B, i32 0, i32 3, i32 1)
+  store i32 15, i32* getelementptr inbounds ([4 x [4 x i32]], [4 x [4 x i32]]* @B, i32 0, i32 3, i32 2)
+  store i32 16, i32* getelementptr inbounds ([4 x [4 x i32]], [4 x [4 x i32]]* @B, i32 0, i32 3, i32 3)
+  br label %return
+
+return:                                           ; preds = %entry
+  ret void
+}
+
+define void @clockwiseB() {
+entry:
+  %i = alloca i32
+  %j = alloca i32
+  store i32 0, i32* %i
+  br label %while.cond
+
+while.cond:                                       ; preds = %while.end, %entry
+  %i1 = load i32, i32* %i
+  %icmplt = icmp slt i32 %i1, 4
+  %zext = zext i1 %icmplt to i32
+  %whilecond = icmp ne i32 %zext, 0
+  br i1 %whilecond, label %while.loop, label %while.end16
+
+while.loop:                                       ; preds = %while.cond
+  store i32 0, i32* %j
+  br label %while.cond2
+
+while.cond2:                                      ; preds = %while.loop7, %while.loop
+  %j3 = load i32, i32* %j
+  %icmplt4 = icmp slt i32 %j3, 4
+  %zext5 = zext i1 %icmplt4 to i32
+  %whilecond6 = icmp ne i32 %zext5, 0
+  br i1 %whilecond6, label %while.loop7, label %while.end
+
+while.loop7:                                      ; preds = %while.cond2
+  %j8 = load i32, i32* %j
+  %i9 = load i32, i32* %i
+  %sub = sub i32 3, %i9
+  %gepinbounds = getelementptr inbounds [4 x [4 x i32]], [4 x [4 x i32]]* @A, i32 0, i32 %j8, i32 %sub
+  %i10 = load i32, i32* %i
+  %j11 = load i32, i32* %j
+  %gepinbounds12 = getelementptr inbounds [4 x [4 x i32]], [4 x [4 x i32]]* @B, i32 0, i32 %i10, i32 %j11
+  %B = load i32, i32* %gepinbounds12
+  store i32 %B, i32* %gepinbounds
+  %j13 = load i32, i32* %j
+  %add = add i32 %j13, 1
+  store i32 %add, i32* %j
+  br label %while.cond2
+
+while.end:                                        ; preds = %while.cond2
+  %i14 = load i32, i32* %i
+  %add15 = add i32 %i14, 1
+  store i32 %add15, i32* %i
+  br label %while.cond
+
+while.end16:                                      ; preds = %while.cond
+  br label %return
+
+return:                                           ; preds = %while.end16
+  ret void
+}
+
+define void @anticlockwiseB() {
+entry:
+  %i = alloca i32
+  %j = alloca i32
+  store i32 0, i32* %i
+  br label %while.cond
+
+while.cond:                                       ; preds = %while.end, %entry
+  %i1 = load i32, i32* %i
+  %icmplt = icmp slt i32 %i1, 4
+  %zext = zext i1 %icmplt to i32
+  %whilecond = icmp ne i32 %zext, 0
+  br i1 %whilecond, label %while.loop, label %while.end16
+
+while.loop:                                       ; preds = %while.cond
+  store i32 0, i32* %j
+  br label %while.cond2
+
+while.cond2:                                      ; preds = %while.loop7, %while.loop
+  %j3 = load i32, i32* %j
+  %icmplt4 = icmp slt i32 %j3, 4
+  %zext5 = zext i1 %icmplt4 to i32
+  %whilecond6 = icmp ne i32 %zext5, 0
+  br i1 %whilecond6, label %while.loop7, label %while.end
+
+while.loop7:                                      ; preds = %while.cond2
+  %j8 = load i32, i32* %j
+  %sub = sub i32 3, %j8
+  %i9 = load i32, i32* %i
+  %gepinbounds = getelementptr inbounds [4 x [4 x i32]], [4 x [4 x i32]]* @A, i32 0, i32 %sub, i32 %i9
+  %i10 = load i32, i32* %i
+  %j11 = load i32, i32* %j
+  %gepinbounds12 = getelementptr inbounds [4 x [4 x i32]], [4 x [4 x i32]]* @B, i32 0, i32 %i10, i32 %j11
+  %B = load i32, i32* %gepinbounds12
+  store i32 %B, i32* %gepinbounds
+  %j13 = load i32, i32* %j
+  %add = add i32 %j13, 1
+  store i32 %add, i32* %j
+  br label %while.cond2
+
+while.end:                                        ; preds = %while.cond2
+  %i14 = load i32, i32* %i
+  %add15 = add i32 %i14, 1
+  store i32 %add15, i32* %i
+  br label %while.cond
+
+while.end16:                                      ; preds = %while.cond
+  br label %return
+
+return:                                           ; preds = %while.end16
+  ret void
+}
+
+define void @select() {
+entry:
+  call void @putch(i8 114)
+  call void @putch(i8 111)
+  call void @putch(i8 116)
+  call void @putch(i8 97)
+  call void @putch(i8 116)
+  call void @putch(i8 101)
+  call void @putch(i8 32)
+  call void @putch(i8 97)
+  call void @putch(i8 114)
+  call void @putch(i8 114)
+  call void @putch(i8 97)
+  call void @putch(i8 121)
+  call void @putch(i8 46)
+  call void @putch(i8 10)
+  call void @putch(i8 49)
+  call void @putch(i8 32)
+  call void @putch(i8 102)
+  call void @putch(i8 111)
+  call void @putch(i8 114)
+  call void @putch(i8 32)
+  call void @putch(i8 99)
+  call void @putch(i8 108)
+  call void @putch(i8 111)
+  call void @putch(i8 99)
+  call void @putch(i8 107)
+  call void @putch(i8 119)
+  call void @putch(i8 105)
+  call void @putch(i8 115)
+  call void @putch(i8 101)
+  call void @putch(i8 46)
+  call void @putch(i8 10)
+  call void @putch(i8 45)
+  call void @putch(i8 49)
+  call void @putch(i8 32)
+  call void @putch(i8 102)
+  call void @putch(i8 111)
+  call void @putch(i8 114)
+  call void @putch(i8 32)
+  call void @putch(i8 97)
+  call void @putch(i8 110)
+  call void @putch(i8 116)
+  call void @putch(i8 105)
+  call void @putch(i8 99)
+  call void @putch(i8 108)
+  call void @putch(i8 111)
+  call void @putch(i8 99)
+  call void @putch(i8 107)
+  call void @putch(i8 119)
+  call void @putch(i8 105)
+  call void @putch(i8 115)
+  call void @putch(i8 101)
+  call void @putch(i8 46)
+  call void @putch(i8 10)
+  call void @putch(i8 48)
+  call void @putch(i8 32)
+  call void @putch(i8 102)
+  call void @putch(i8 111)
+  call void @putch(i8 114)
+  call void @putch(i8 32)
+  call void @putch(i8 102)
+  call void @putch(i8 105)
+  call void @putch(i8 110)
+  call void @putch(i8 105)
+  call void @putch(i8 115)
+  call void @putch(i8 104)
+  call void @putch(i8 46)
+  call void @putch(i8 10)
+  call void @putch(i8 115)
+  call void @putch(i8 101)
+  call void @putch(i8 108)
+  call void @putch(i8 101)
+  call void @putch(i8 99)
+  call void @putch(i8 116)
+  call void @putch(i8 58)
+  call void @geti(i32* @i)
+  br label %return
+
+return:                                           ; preds = %entry
+  ret void
+}
+
+define void @printBA() {
+entry:
+  call void @putch(i8 98)
+  call void @putch(i8 101)
+  call void @putch(i8 102)
+  call void @putch(i8 111)
+  call void @putch(i8 114)
+  call void @putch(i8 101)
+  call void @putch(i8 58)
+  call void @putch(i8 10)
+  call void @printB()
+  call void @putch(i8 97)
+  call void @putch(i8 102)
+  call void @putch(i8 116)
+  call void @putch(i8 101)
+  call void @putch(i8 114)
+  call void @putch(i8 58)
+  call void @putch(i8 10)
+  call void @printA()
+  br label %return
+
+return:                                           ; preds = %entry
+  ret void
+}
+
+define void @cloneAB() {
+entry:
+  %i = alloca i32
+  %j = alloca i32
+  %t = alloca i32
+  store i32 0, i32* %i
+  br label %while.cond
+
+while.cond:                                       ; preds = %while.end, %entry
+  %i1 = load i32, i32* %i
+  %icmplt = icmp slt i32 %i1, 4
+  %zext = zext i1 %icmplt to i32
+  %whilecond = icmp ne i32 %zext, 0
+  br i1 %whilecond, label %while.loop, label %while.end23
+
+while.loop:                                       ; preds = %while.cond
+  store i32 0, i32* %j
+  br label %while.cond2
+
+while.cond2:                                      ; preds = %while.loop7, %while.loop
+  %j3 = load i32, i32* %j
+  %icmplt4 = icmp slt i32 %j3, 4
+  %zext5 = zext i1 %icmplt4 to i32
+  %whilecond6 = icmp ne i32 %zext5, 0
+  br i1 %whilecond6, label %while.loop7, label %while.end
+
+while.loop7:                                      ; preds = %while.cond2
+  %i8 = load i32, i32* %i
+  %j9 = load i32, i32* %j
+  %gepinbounds = getelementptr inbounds [4 x [4 x i32]], [4 x [4 x i32]]* @B, i32 0, i32 %i8, i32 %j9
+  %B = load i32, i32* %gepinbounds
+  store i32 %B, i32* %t
+  %i10 = load i32, i32* %i
+  %j11 = load i32, i32* %j
+  %gepinbounds12 = getelementptr inbounds [4 x [4 x i32]], [4 x [4 x i32]]* @B, i32 0, i32 %i10, i32 %j11
+  %i13 = load i32, i32* %i
+  %j14 = load i32, i32* %j
+  %gepinbounds15 = getelementptr inbounds [4 x [4 x i32]], [4 x [4 x i32]]* @A, i32 0, i32 %i13, i32 %j14
+  %A = load i32, i32* %gepinbounds15
+  store i32 %A, i32* %gepinbounds12
+  %i16 = load i32, i32* %i
+  %j17 = load i32, i32* %j
+  %gepinbounds18 = getelementptr inbounds [4 x [4 x i32]], [4 x [4 x i32]]* @A, i32 0, i32 %i16, i32 %j17
+  %t19 = load i32, i32* %t
+  store i32 %t19, i32* %gepinbounds18
+  %j20 = load i32, i32* %j
+  %add = add i32 %j20, 1
+  store i32 %add, i32* %j
+  br label %while.cond2
+
+while.end:                                        ; preds = %while.cond2
+  %i21 = load i32, i32* %i
+  %add22 = add i32 %i21, 1
+  store i32 %add22, i32* %i
+  br label %while.cond
+
+while.end23:                                      ; preds = %while.cond
+  br label %return
+
+return:                                           ; preds = %while.end23
+  ret void
+}

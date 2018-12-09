@@ -1,0 +1,147 @@
+# rotate 4 x 4 array,clockwise or anticlockwise
+INT B[4][4],A[4][4];
+INT i;
+
+PROCEDURE VOID printB();
+INT i,j;
+BEGIN
+i=0;
+WHILE i < 4 DO
+  BEGIN
+  j=0;
+  WHILE j < 4 DO
+    BEGIN
+    ! B[i][j];
+    j=j+1;
+    ! '\t'
+    END;
+  i=i+1;
+  ! '\n'
+  END
+END;
+
+PROCEDURE VOID printA();
+INT i,j;
+BEGIN
+i=0;
+WHILE i < 4 DO
+  BEGIN
+  j=0;
+  WHILE j < 4 DO
+    BEGIN
+    ! A[i][j];
+    j=j+1;
+    ! '\t'
+    END;
+  i=i+1;
+  ! '\n'
+  END
+END;
+
+PROCEDURE VOID initB();
+BEGIN
+B[0][0]=1;  B[0][1]=2;  B[0][2]=3;  B[0][3]=4;
+B[1][0]=5;  B[1][1]=6;  B[1][2]=7;  B[1][3]=8;
+B[2][0]=9;  B[2][1]=10; B[2][2]=11; B[2][3]=12;
+B[3][0]=13; B[3][1]=14; B[3][2]=15; B[3][3]=16
+END;
+
+PROCEDURE VOID clockwiseB();
+INT i,j;
+BEGIN
+i=0;
+WHILE i < 4 DO
+  BEGIN
+  j=0;
+  WHILE j < 4 DO
+    BEGIN
+    A[j][4-1-i]=B[i][j];
+    j=j+1
+    END;
+  i=i+1
+  END
+END;
+
+PROCEDURE VOID anticlockwiseB();
+INT i,j;
+BEGIN
+i=0;
+WHILE i < 4 DO
+  BEGIN
+  j=0;
+  WHILE j < 4 DO
+    BEGIN
+    A[4-1-j][i]=B[i][j];
+    j=j+1
+    END;
+  i=i+1
+  END
+END;
+
+PROCEDURE VOID select();
+BEGIN
+! 'r';! 'o';! 't';! 'a';! 't';! 'e';! ' ';
+! 'a';! 'r';! 'r';! 'a';! 'y';! '.';! '\n';
+! '1';! ' ';
+! 'f';! 'o';! 'r';! ' ';
+! 'c';! 'l';! 'o';! 'c';! 'k';! 'w';! 'i';! 's';! 'e';! '.';! '\n';
+! '-';! '1';! ' ';
+! 'f';! 'o';! 'r';! ' ';
+! 'a';! 'n';! 't';! 'i';! 'c';! 'l';! 'o';! 'c';! 'k';! 'w';! 'i';! 's';! 'e';! '.';! '\n';
+! '0';! ' ';
+! 'f';! 'o';! 'r';! ' ';
+! 'f';! 'i';! 'n';! 'i';! 's';! 'h';! '.';! '\n';
+! 's';! 'e';! 'l';! 'e';! 'c';! 't';! ':';
+? i
+END;
+
+PROCEDURE VOID printBA();
+BEGIN
+! 'b';! 'e';! 'f';! 'o';! 'r';! 'e';! ':';! '\n';
+CALL printB();
+! 'a';! 'f';! 't';! 'e';! 'r';! ':';! '\n';
+CALL printA()
+END;
+
+PROCEDURE VOID cloneAB();
+INT i,j;
+INT t;
+BEGIN
+i=0;
+WHILE i < 4 DO
+  BEGIN
+  j=0;
+  WHILE j < 4 DO
+    BEGIN
+    t=B[i][j];
+    B[i][j]=A[i][j];
+    A[i][j]=t;
+    j=j+1
+    END;
+  i=i+1
+  END
+END;
+
+BEGIN
+CALL initB();
+CALL printB();
+CALL select();
+WHILE i != 0 DO
+  BEGIN
+  IF i == 1 THEN
+    BEGIN
+    CALL clockwiseB();
+    CALL printBA();
+    CALL cloneAB()
+    END;
+  IF i == -1 THEN
+    BEGIN
+    CALL anticlockwiseB();
+    CALL printBA();
+    CALL cloneAB()
+    END;
+  CALL select()
+  END
+END
+.
+
