@@ -4,9 +4,9 @@
 
 # How to use
 ============
-	0. This program has been done and tested on linux only, so the platform that I can warrant to successfuly run is linux.
+	0. This program has been done and tested on linux only, so the platform that it can warrant to run successfuly is linux.
 	1. On linux, please download llvm 6.0.0 source codes first, optionally, you can download the clang compiler source co-
-	   des provided llvm, clang can act as your c/c++ compiler, and put it to the "tools/" sub-directory of llvm source,
+	   des provided by llvm, clang can act as your c/c++ compiler, and put it to the "tools/" sub-directory of llvm source,
 	   the llvm 6.0.0 and clang can get from here, "http://releases.llvm.org/", then you need to build llvm, there is a
 	   tutorial that provide information about build llvm with cmake, you can follow it to build llvm,
 	   "http://releases.llvm.org/6.0.0/docs/CMake.html", after you build llvm successfully, then install it to path
@@ -35,11 +35,12 @@
 	amming that contains "main" function, but you normally could not to directly compile it by C compiler such as "gcc", be-
 	cause if your pl0e program contains some statement that needs external function, such as input statement(? statement),
 	output statement(! statement), then if you run directly "gcc output.o", there often will show you information like 
-	"undefind reference to ...", this means some symbols needed by "output.o" can not find, what is happened?
+	"undefined reference to ...", this means some symbols needed by "output.o" can not find, what is happened?
 	when you JIT(Just-In-Time compilation, directly run the llvm ir produced by pl0e frontend) your pl0e program in pl0e 
 	compiler frontend, that's OK, because frontend contains all the needed function within it, but when you want to run the
-	object file outside the frontend, you will these neccesary functions, these functions already written in an external
-	library named "pl0e-lib.c", so if you want to run your object file, please compile with it, "gcc output.o pl0e-lib.c".
+	object file outside the frontend, you will need these neccesary functions, these functions already written in an extern-
+	al library named "pl0e-lib.c", so if you want to run your object file, compile together with it, for example, you can
+	use this command, "gcc output.o pl0e-lib.c".
 
 # Tools/platform used version
 =============================
