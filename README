@@ -15,7 +15,7 @@
 	   command "PATH=${PATH}:/usr/local/bin" to use tools provided by llvm.
 	2. Use c++ compiler that support c++11 to compile file "pl0e.cpp", says that you have "clang++" compiler and this tar-
 	   ball is extracted to path "/tmp/llvm-frontend-pl0e/", 
-	   then you can run the compilation command "clang++ -g -O3/tmp/llvm-frontend-pl0e/pl0e.cpp `llvm-config --cxxflags 
+	   then you can run the compilation command "clang++ -g -O3 /tmp/llvm-frontend-pl0e/pl0e.cpp `llvm-config --cxxflags 
 	   --ldflags --system-libs --libs all` -rdynamic -o pl0e" to compile it, or if you use g++, then use this command 
 	   "g++ -std=c++11 -g /tmp/llvm-frontend-pl0e/pl0e.cpp `llvm-config --cxxflags --ldflags --system-libs --libs all` 
 	   -rdynamic -o pl0e" to compile it.
